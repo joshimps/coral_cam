@@ -1,1 +1,12 @@
 //Reads pins which button is connected to and publishes a boolean signaling if button was pressed
+
+#include "button.h"
+
+
+///////////////////////////////////////////////////////////
+// Constructors & Destructors
+//////////////////////////////////////////////////////////
+
+Button::Button(){
+
+}
