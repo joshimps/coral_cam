@@ -1,0 +1,1 @@
+//After lights have been triggered takes a capture

@@ -1,0 +1,1 @@
+//Reads pins which button is connected to and publishes a boolean signaling if button was pressed
