@@ -15,7 +15,18 @@ class RealsenseCamera: public rclcpp::Node{
         // Public Methods                                                                                        //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        /**
+        Saves the current point cloud seen by the Intel Realsense camera
+        @return capture successful
+        */
+        int capturePointCloud();
 
+
+        /**
+        Returns the current point cloud save in currentPointCloud_;
+        @return capture successful
+        */
+        sensor_msgs::msg::PointCloud2 getCurrentPointCloud();
 
     private:
 
@@ -33,7 +44,7 @@ class RealsenseCamera: public rclcpp::Node{
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         rclcpp::Subscription<std_msgs::msg::String>::SharedPtr realsenseSubscriber_;
-        rclcpp::Subscription<std_msgs::msg::String>::SharedPtr buttonSubscriber_;
+        rclcpp::Publisher<sensor_msgs::msg::PointCloud2 >::SharedPtr capturedPointCloudPublisher_;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Constants                                                                                             //
