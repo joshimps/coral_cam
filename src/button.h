@@ -3,7 +3,7 @@
 
 #include <functional>
 #include <memory>
-#include <rgpio.h>
+#include <lgpio.h>
 #include <chrono> 
 using namespace std::chrono_literals;
 

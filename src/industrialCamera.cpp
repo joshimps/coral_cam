@@ -1,5 +1,5 @@
 #include "industrialCamera.h"
 
-IndustrialCamera::IndustrialCamera(){
+IndustrialCamera::IndustrialCamera():Node("industrial_camera_node"){
     
 }
