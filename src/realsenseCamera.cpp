@@ -3,7 +3,7 @@
 #include "realsenseCamera.h"
 
 RealsenseCamera::RealsenseCamera():Node("realsense_camera"){
-
+    
 }
 
 

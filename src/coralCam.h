@@ -10,8 +10,8 @@ class CoralCam : public rclcpp::Node{
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Constructors and Destructors                                                                          //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-            CoralCam();
+
+            CoralCam(int buttonNumber,int ledNumber);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Public Methods                                                                                        //
@@ -39,10 +39,11 @@ class CoralCam : public rclcpp::Node{
         // Variables                                                                                             //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        Button button_;
-        Gui gui_;
-        IndustrialCamera industrialCamera_;
-        Lights lights_;
-        RealsenseCamera realsenseCamera_;
+        Button* button_;
+        Gui* gui_;
+        IndustrialCamera* industrialCamera_;
+        Lights* lights_;
+        RealsenseCamera* realsenseCamera_;
+
 
 };
