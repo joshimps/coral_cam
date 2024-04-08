@@ -17,19 +17,14 @@ int main(int argc, char * argv[]){
     buttonOptions.allow_undeclared_parameters(true);
     buttonOptions.automatically_declare_parameters_from_overrides(true);
 
-    const int buttonPinNumber = 13;
-    const int ledPinNumber = 29;
     int gpioHandle;
     
-    gpioHandle = lgGpiochipOpen(0);
     
-    if(gpioHandle >= 0){
-        auto button = std::make_shared<coral_cam::Button>(buttonOptions);
-        std::cout << "HERE" << std::endl;
-        button.get()->declare_parameter("gpio_handle",gpioHandle);
-        executor.add_node(button);
-    }
 
+    auto button = std::make_shared<coral_cam::Button>(buttonOptions);
+    button.get()->set_parameter(rclcpp::Parameter("gpio_handle", 69));
+    executor.add_node(button);
+    
     auto realsenseCamera = std::make_shared<coral_cam::RealsenseCamera>(realsenseCameraOptions);
     executor.add_node(realsenseCamera);
     

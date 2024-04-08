@@ -9,7 +9,7 @@ namespace coral_cam{
     }
 
     void RealsenseCamera::capturePointCloud(std_msgs::msg::Bool msg){
-        RCLCPP_INFO(get_logger(),"RECIEVED");
+        RCLCPP_INFO(this->get_logger(),"RECIEVED");
         capturedPointCloud_ = currentPointCloud_;
     }
 
