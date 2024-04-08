@@ -1,7 +1,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/bool.hpp"
 #include <lgpio.h>
-
 #include <functional>
 #include <memory>
 #include <chrono> 

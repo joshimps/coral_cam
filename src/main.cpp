@@ -14,6 +14,9 @@ int main(int argc, char * argv[]){
     rclcpp::NodeOptions buttonOptions;
     rclcpp::NodeOptions realsenseCameraOptions;
 
+    buttonOptions.allow_undeclared_parameters(true);
+    buttonOptions.automatically_declare_parameters_from_overrides(true);
+
     const int buttonPinNumber = 13;
     const int ledPinNumber = 29;
     int gpioHandle;
@@ -22,6 +25,7 @@ int main(int argc, char * argv[]){
     
     if(gpioHandle >= 0){
         auto button = std::make_shared<coral_cam::Button>(buttonOptions);
+        std::cout << "HERE" << std::endl;
         button.get()->declare_parameter("gpio_handle",gpioHandle);
         executor.add_node(button);
     }

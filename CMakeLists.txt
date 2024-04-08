@@ -15,22 +15,32 @@ find_package(std_msgs REQUIRED)
 
 add_library(button_component SHARED src/button.cpp)
 ament_target_dependencies(button_component rclcpp std_msgs sensor_msgs)
-rclcpp_components_register_nodes(button_component "coralCam::Button")
+rclcpp_components_register_nodes(button_component "coral_cam::Button")
 ament_target_dependencies(button_component rclcpp rclcpp_components std_msgs sensor_msgs)
 
 add_library(realsense_camera_component SHARED src/realsenseCamera.cpp)
 ament_target_dependencies(realsense_camera_component rclcpp std_msgs sensor_msgs)
-rclcpp_components_register_nodes(realsense_camera_component "coralCam::RealsenseCamera")
+rclcpp_components_register_nodes(realsense_camera_component "coral_cam::RealsenseCamera")
 ament_target_dependencies(realsense_camera_component rclcpp_components rclcpp std_msgs)
+
 
 add_executable(main src/main.cpp)
 
 target_link_libraries(main button_component realsense_camera_component lgpio)
 
+ament_export_targets(export_button_component)
+ament_export_targets(export_realsense_camera_component)
 
-install(TARGETS 
-        button_component
-        realsense_camera_component
+
+install(TARGETS button_component
+        EXPORT export_button_component
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
+)
+
+install(TARGETS realsense_camera_component
+        EXPORT export_realsense_camera_component
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin
@@ -40,6 +50,5 @@ install(DIRECTORY
   launch
   DESTINATION share/${PROJECT_NAME}/
 )
-
 
 ament_package()

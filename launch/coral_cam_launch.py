@@ -16,11 +16,13 @@ def generate_launch_description():
                     plugin='coral_cam::Button',
                     name='button_node',
                     parameters=[{'button_pin_number' : 13}],
+                    extra_arguments=[{'use_intra_process_comms': True}],
                 ),
                 ComposableNode(
                     package='coral_cam',
                     plugin='coral_cam::RealsenseCamera',
-                    name='realsense_camera_node'
+                    name='realsense_camera_node',
+                    extra_arguments=[{'use_intra_process_comms': True}],
                 )
             ],
             output='screen',
