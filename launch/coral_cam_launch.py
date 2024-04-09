@@ -15,7 +15,7 @@ def generate_launch_description():
                     package='coral_cam',
                     plugin='coral_cam::Button',
                     name='button_node',
-                    parameters=[{'button_pin_number' : 13}],
+                    parameters=[{'button_pin_number' : 27},{'gpio_number' : 5}],
                     extra_arguments=[{'use_intra_process_comms': True}],
                 ),
                 ComposableNode(

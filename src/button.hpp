@@ -6,6 +6,8 @@
 #include <chrono> 
 using namespace std::chrono_literals;
 
+#define LFLAGS 0
+
 namespace coral_cam{
     class Button : public rclcpp::Node{
         public:
@@ -38,6 +40,7 @@ namespace coral_cam{
             // Variables                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
             int gpioHandle_;
+            int gpioNumber_;
             int buttonPinNumber_;
             std_msgs::msg::Bool buttonPressedMessage_;
 

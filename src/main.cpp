@@ -22,8 +22,9 @@ int main(int argc, char * argv[]){
     
 
     auto button = std::make_shared<coral_cam::Button>(buttonOptions);
-    button.get()->set_parameter(rclcpp::Parameter("gpio_handle", 69));
+    
     executor.add_node(button);
+    button.get()->set_parameter(rclcpp::Parameter("gpio_handle", -69));
     
     auto realsenseCamera = std::make_shared<coral_cam::RealsenseCamera>(realsenseCameraOptions);
     executor.add_node(realsenseCamera);
