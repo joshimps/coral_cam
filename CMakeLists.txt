@@ -18,18 +18,22 @@ rclcpp_components_register_nodes(button_component "coral_cam::Button")
 ament_target_dependencies(button_component rclcpp rclcpp_components std_msgs sensor_msgs)
 target_link_libraries(button_component lgpio)
 
-
 add_library(realsense_camera_component SHARED src/realsenseCamera.cpp)
 rclcpp_components_register_nodes(realsense_camera_component "coral_cam::RealsenseCamera")
 ament_target_dependencies(realsense_camera_component rclcpp_components rclcpp std_msgs sensor_msgs)
 
+add_library(gpio_component SHARED src/gpio.cpp)
+rclcpp_components_register_nodes(gpio_component "coral_cam::Gpio")
+ament_target_dependencies(gpio_component rclcpp_components rclcpp std_msgs )
+target_link_libraries(gpio_component lgpio)
 
-add_executable(main src/main.cpp)
+add_executable(coral_cam src/coralCam.cpp)
 
-target_link_libraries(main button_component realsense_camera_component lgpio)
+target_link_libraries(coral_cam realsense_camera_component  button_component gpio_component lgpio)
 
 ament_export_targets(export_button_component)
 ament_export_targets(export_realsense_camera_component)
+ament_export_targets(export_gpio_component)
 
 
 install(TARGETS button_component
@@ -45,6 +49,14 @@ install(TARGETS realsense_camera_component
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin
 )
+
+install(TARGETS gpio_component
+        EXPORT export_gpio_component
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
+)
+
 
 install(DIRECTORY
   launch

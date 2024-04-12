@@ -4,18 +4,17 @@
 #include <lgpio.h>
 #include <functional>
 #include <memory>
-#include <chrono> 
 using namespace std::chrono_literals;
 
 #define LFLAGS 0
 
 namespace coral_cam{
-    class Button : public rclcpp::Node{
+    class Gpio : public rclcpp::Node{
         public:
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Constructors and Destructors                                                                          //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            Button(const rclcpp::NodeOptions &options);
+            Gpio(const rclcpp::NodeOptions &options);
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Public Methods                                                                                        //
@@ -25,9 +24,6 @@ namespace coral_cam{
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Callbacks                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            int setGpioHandle(std_msgs::msg::Int64 msg);
-            int setButtonPin(std_msgs::msg::Int64 msg);
-            void readPin();
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Private Methods                                                                                       //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,21 +31,21 @@ namespace coral_cam{
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Node,Timers, Publishers and Subscribers                                                                      //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr buttonPressedPublisher_;
-            rclcpp::Subscription<std_msgs::msg::Int64>::SharedPtr gpioHandleSubscriber_;
-            rclcpp::Subscription<std_msgs::msg::Int64>::SharedPtr buttonPinSubscriber_;
-            rclcpp::TimerBase::SharedPtr timer_;
+            rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr gpioHandlePublisher_;
+            rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr buttonPinPublisher_;
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Constants                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            const int lflags_ = 0;
+
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Variables                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
             int gpioHandle_;
-            int buttonPinNumber_;
-            bool pinConfigured_;
-            std_msgs::msg::Bool buttonPressedMessage_;
+            int gpioNumber_;
+            int buttonPin_;
+
+            std_msgs::msg::Int64 gpioHandleMessage_;
+            std_msgs::msg::Int64 buttonPinMessage_;
 
     };  
 }

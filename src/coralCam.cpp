@@ -4,31 +4,25 @@
 #include "industrialCamera.hpp"
 #include "lights.hpp"
 #include "realsenseCamera.hpp"
-#include <lgpio.h>
+#include "gpio.hpp"
 
 int main(int argc, char * argv[]){
-
     rclcpp::init(argc, argv);
 
     rclcpp::executors::StaticSingleThreadedExecutor executor;
     rclcpp::NodeOptions buttonOptions;
     rclcpp::NodeOptions realsenseCameraOptions;
-
-    buttonOptions.allow_undeclared_parameters(true);
-    buttonOptions.automatically_declare_parameters_from_overrides(true);
-
-    int gpioHandle;
-    
-    
+    rclcpp::NodeOptions gpioOptions;
 
     auto button = std::make_shared<coral_cam::Button>(buttonOptions);
-    
     executor.add_node(button);
-    button.get()->set_parameter(rclcpp::Parameter("gpio_handle", -69));
-    
+
     auto realsenseCamera = std::make_shared<coral_cam::RealsenseCamera>(realsenseCameraOptions);
     executor.add_node(realsenseCamera);
-    
+
+    auto gpio = std::make_shared<coral_cam::Gpio>(gpioOptions);
+    executor.add_node(gpio);
+
     executor.spin();
 
     rclcpp::shutdown();

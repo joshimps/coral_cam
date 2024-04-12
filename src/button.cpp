@@ -4,52 +4,72 @@
 // Constructors & Destructors
 //////////////////////////////////////////////////////////
 namespace coral_cam{
+
     Button::Button(const rclcpp::NodeOptions &options):Node("button_node",options){
-
-        
-        this->declare_parameter("button_pin_number", -1);
-        this->declare_parameter("gpio_number", -1);
-        this->declare_parameter("gpio_handle", -1);
-        
-        buttonPinNumber_ = this->get_parameter("button_pin_number").as_int();
-
-        lgGpioClaimInput(gpioHandle_, lflags_, buttonPinNumber_);
-
         buttonPressedPublisher_ = this->create_publisher<std_msgs::msg::Bool>("button_pressed_topic", 10);
-        timer_ = this->create_wall_timer(1000ms, std::bind(&Button::timerCallback, this));
+
+        gpioHandleSubscriber_ = this->create_subscription<std_msgs::msg::Int64>(
+        "gpio_handle_topic", 10, std::bind(&Button::setGpioHandle, this, std::placeholders::_1));
+
+        buttonPinSubscriber_ = this->create_subscription<std_msgs::msg::Int64>(
+        "button_pin_topic", 10, std::bind(&Button::setButtonPin, this, std::placeholders::_1));
+
+        pinConfigured_ = false;
+        gpioHandle_ = -1;
+        buttonPinNumber_ = -1;
+        timer_ = this->create_wall_timer(1000ms, std::bind(&Button::readPin, this));
     }
 
-    void Button::timerCallback(){
-        //Periodically check GPIO for input signal
-        int pinValue;
-        
-        gpioHandle_ = this->get_parameter_or("gpio_handle",rclcpp::Parameter("gpio_handle", -420)).as_int();
-        
-        if(gpioHandle_ >= 0){
-            RCLCPP_INFO(this->get_logger(), "Successfully retrieved GPIO Handle %d", gpioHandle_);
-            RCLCPP_INFO(this->get_logger(), "Reading pin number %d", buttonPinNumber_);
-            pinValue = lgGpioRead(gpioHandle_, buttonPinNumber_);
+    int Button::setGpioHandle(std_msgs::msg::Int64 msg){
 
-            RCLCPP_INFO(this->get_logger(), "Reading pin value %d", pinValue);
-
-            if (pinValue == 1)
-            {
-                RCLCPP_INFO(get_logger(),"BUTTON PRESSED");
-            }
-
-            buttonPressedMessage_.data = pinValue;
-
-            //Publish the state of the button
-            buttonPressedPublisher_->publish(buttonPressedMessage_);
+        if(msg.data >= 0){
+            RCLCPP_INFO(this->get_logger(), "GPIO HANDLE SET: %ld", msg.data);
+            gpioHandle_ = msg.data;
+            return 0;
         }
         else{
-            RCLCPP_INFO(this->get_logger(), "GPIO HANDLE NOT VALID %d", gpioHandle_ );
-            buttonPressedMessage_.data = -1;
-            buttonPressedPublisher_->publish(buttonPressedMessage_);
+            RCLCPP_ERROR(this->get_logger(), "INVALID GPIO HANDLE: %ld", msg.data);
+            return 1;
+        }
+    }
+
+    int Button::setButtonPin(std_msgs::msg::Int64 msg){
+        if(msg.data >= 0){
+            RCLCPP_INFO(this->get_logger(), "BUTTON PIN NUMBER SET: %ld", msg.data);
+            buttonPinNumber_ = msg.data;
+            return 0;
+        }
+        else{
+            RCLCPP_ERROR(this->get_logger(), "INVALID PIN NUMBER: %ld", msg.data);
+            return 1;
 
         }
-       
+    }
 
+    void Button::readPin(){
+        int pinValue;
+
+        //If pin has not been configured and it has valid inputs configure the pin
+        if(pinConfigured_ == false && buttonPinNumber_ > -1 && gpioHandle_ > -1){
+            lgGpioClaimInput(gpioHandle_,lflags_,buttonPinNumber_);
+            pinConfigured_ = true;
+            RCLCPP_INFO(this->get_logger(), "PIN CONFIGURED");
+        }
+        else if(buttonPinNumber_ < 0 ){
+            RCLCPP_INFO(this->get_logger(), "PIN NUMBER HAS NOT BEEN CONFIGURED CORRECTLY: %d",buttonPinNumber_);
+            return;
+        }
+        else if(gpioHandle_ < 0){
+            RCLCPP_INFO(this->get_logger(), "GPIO HANDLE HAS NOT BEEN CONFIGURED CORRECTLY: %d",gpioHandle_);
+            return;
+        }
+
+        pinValue = lgGpioRead(gpioHandle_, buttonPinNumber_);
+        RCLCPP_INFO(this->get_logger(), "PIN VALUE: %d", pinValue);
+        
+        buttonPressedMessage_.data = pinValue;
+        buttonPressedPublisher_->publish(buttonPressedMessage_);
+        return;
     }
 
 }
