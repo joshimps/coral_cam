@@ -6,6 +6,7 @@ namespace coral_cam{
     RealsenseCamera::RealsenseCamera(const rclcpp::NodeOptions & options):Node("realsense_camera_node",options){
         buttonSubscriber_ = this->create_subscription<std_msgs::msg::Bool>(
         "button_pressed_topic", 10, std::bind(&RealsenseCamera::capturePointCloud, this, std::placeholders::_1));
+
     }
 
     void RealsenseCamera::capturePointCloud(std_msgs::msg::Bool msg){
