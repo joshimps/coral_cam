@@ -34,7 +34,7 @@ def generate_launch_description():
                         plugin='coral_cam::Gpio',
                         name='gpio_node',
                         extra_arguments=[{'use_intra_process_comms': True}],
-                        parameters = [{"gpio_number": 5},{"button_pin": 27},{"yea":1}],
+                        parameters = [{"gpio_number": 5},{"button_pin": 27}],
                     )
                 ],
                 output='screen',
