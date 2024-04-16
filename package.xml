@@ -12,6 +12,12 @@
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>lgpio</depend>
+  <depend>Eigen</depend>
+  <depend>PCL</depend>
+  <depend>pcl_conversions</depend>
+
+
+
   <buildtool_depend>ament_cmake</buildtool_depend>
   <exec_depend>ros2launch</exec_depend>
 
