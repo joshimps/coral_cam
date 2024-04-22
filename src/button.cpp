@@ -65,7 +65,6 @@ namespace coral_cam{
         }
 
         pinValue = lgGpioRead(gpioHandle_, buttonPinNumber_);
-        RCLCPP_INFO(this->get_logger(), "PIN VALUE: %d", pinValue);
 
         if(pinValue == 1){
             buttonPressedMessage_.data = pinValue;
