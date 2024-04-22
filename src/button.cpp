@@ -52,8 +52,8 @@ namespace coral_cam{
         //If pin has not been configured and it has valid inputs configure the pin
         if(pinConfigured_ == false && buttonPinNumber_ > -1 && gpioHandle_ > -1){
             lgGpioClaimInput(gpioHandle_,lflags_,buttonPinNumber_);
-            pinConfigured_ = true;
             RCLCPP_INFO(this->get_logger(), "PIN CONFIGURED");
+            pinConfigured_ = true;
         }
         else if(buttonPinNumber_ < 0 ){
             RCLCPP_INFO(this->get_logger(), "PIN NUMBER HAS NOT BEEN CONFIGURED CORRECTLY: %d",buttonPinNumber_);
@@ -66,10 +66,14 @@ namespace coral_cam{
 
         pinValue = lgGpioRead(gpioHandle_, buttonPinNumber_);
         RCLCPP_INFO(this->get_logger(), "PIN VALUE: %d", pinValue);
-        
-        buttonPressedMessage_.data = pinValue;
-        buttonPressedPublisher_->publish(buttonPressedMessage_);
-        return;
+
+        if(pinValue == 1){
+            buttonPressedMessage_.data = pinValue;
+            buttonPressedPublisher_->publish(buttonPressedMessage_);
+        }
+        else{
+            return;
+        }
     }
 
 }
