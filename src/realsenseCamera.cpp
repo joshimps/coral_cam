@@ -45,7 +45,7 @@ namespace coral_cam{
         strftime(dateString, 50, "%d%m%y", currentLocalTime);
 	    strftime(timeString, 50, "%H%M%S", currentLocalTime);
 
-        std::string path = this->get_parameter("point_cloud_path").as_string() + "/pcd_file.pcd" + dateString + " " +timeString;
+        std::string path = this->get_parameter("point_cloud_path").as_string() + "/pcd_file_" + dateString + "_" +timeString + ".pcd";
 
         pcl::io::savePCDFile(path,savedPointCloudAsPcl_,zero,identity,true);
     }
