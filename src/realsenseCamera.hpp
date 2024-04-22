@@ -11,6 +11,7 @@
 
 #include <memory>
 #include <string>
+#include <ctime>
 
 namespace coral_cam{
     class RealsenseCamera: public rclcpp::Node{

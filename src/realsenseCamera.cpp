@@ -14,9 +14,15 @@ namespace coral_cam{
 
     void RealsenseCamera::savePointCloud(std_msgs::msg::Bool msg){
         RCLCPP_INFO(this->get_logger(),"RECIEVED");
-        savedPointCloud_ = currentPointCloud_;
-        pcl_conversions::toPCL(currentPointCloud_,savedPointCloudAsPcl_);
-        writePointCloudtoFile();
+
+        if(msg.data){
+            savedPointCloud_ = currentPointCloud_;
+            pcl_conversions::toPCL(currentPointCloud_,savedPointCloudAsPcl_);
+            writePointCloudtoFile();
+        }
+        else{
+            RCLCPP_INFO(this->get_logger(),"ERROR, BUTTON SUBSCRIBER ACTIVATED WITH FALSE VALUE");
+        }
     }
 
     void RealsenseCamera::readCurrentPointCloud(sensor_msgs::msg::PointCloud2 msg){
@@ -27,7 +33,19 @@ namespace coral_cam{
         Eigen::Vector4f zero = Eigen::Vector4f::Zero();
         Eigen::Quaternionf identity = Eigen::Quaternionf::Identity();
 
-        std::string path = this->get_parameter("point_cloud_path").as_string() + "/pcd_file.pcd";
+        tm * currentLocalTime;
+        time_t currentTime;
+
+        char dateString[100];
+	    char timeString[100];
+
+        time(&currentTime);
+	    currentLocalTime = localtime(&currentTime);
+        
+        strftime(dateString, 50, "%d%m%y", currentLocalTime);
+	    strftime(timeString, 50, "%H%M%S", currentLocalTime);
+
+        std::string path = this->get_parameter("point_cloud_path").as_string() + "/pcd_file.pcd" + dateString + " " +timeString;
 
         pcl::io::savePCDFile(path,savedPointCloudAsPcl_,zero,identity,true);
     }
