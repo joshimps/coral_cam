@@ -47,7 +47,7 @@ def generate_launch_description():
                           'pointcloud.enable': 'true',
                           'pointcloud.ordered_pc':'true',
                           'enable_sync':'true',
-                          'clip_distance' : '0.5',
+                          'clip_distance' : '0.8',
                           'hole_filling_filter.enable':'false',
                          }.items()
         )
