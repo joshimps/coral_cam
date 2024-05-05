@@ -29,6 +29,7 @@ namespace coral_cam{
         }
         else{
             RCLCPP_ERROR(this->get_logger(), "INVALID GPIO HANDLE: %ld", msg.data);
+            
             return 1;
         }
     }

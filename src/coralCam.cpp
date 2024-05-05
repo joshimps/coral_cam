@@ -9,10 +9,11 @@
 int main(int argc, char * argv[]){
     rclcpp::init(argc, argv);
 
-    rclcpp::executors::StaticSingleThreadedExecutor executor;
+    rclcpp::executors::MultiThreadedExecutor executor;
     rclcpp::NodeOptions buttonOptions;
     rclcpp::NodeOptions realsenseCameraOptions;
     rclcpp::NodeOptions gpioOptions;
+    rclcpp::NodeOptions guiOptions;
 
     auto button = std::make_shared<coral_cam::Button>(buttonOptions);
     executor.add_node(button);
@@ -23,7 +24,14 @@ int main(int argc, char * argv[]){
     auto gpio = std::make_shared<coral_cam::Gpio>(gpioOptions);
     executor.add_node(gpio);
 
-    executor.spin();
+    while (rclcpp::ok())
+    {
+        executor.spin_some();
+    }
+
+    executor.remove_node(button);
+    executor.remove_node(realsenseCamera);
+    executor.remove_node(gpio);
 
     rclcpp::shutdown();
 
