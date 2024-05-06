@@ -39,7 +39,22 @@ def generate_launch_description():
                         namespace='coral_cam',
                         extra_arguments=[{'use_intra_process_comms': True}],
                         parameters = [{"gpio_number": 5},{"button_pin": 27}],
-                    )
+                    ),
+                    ComposableNode(
+                        package='image_proc',
+                        plugin='image_proc::ResizeNode',
+                        name='resize_node',
+                        remappings=[
+                            ('image/image_raw', '/camera/color/image_rect_raw'),
+                            ('/image/camera_info','/camera/color/camera_info'),
+                            ('/resize/image_raw','/camera/color/image_rect_resize')
+                        ],
+                        parameters=[{
+                            'use_scale':False,
+                            'height': 1080,
+                            'width': 1920,
+                        }]
+            )
                 ],
                 output='screen',
         ),

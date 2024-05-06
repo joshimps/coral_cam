@@ -2,14 +2,27 @@
 
 namespace coral_cam{
    Gui::Gui(QWidget* parent):QWidget(parent), rclcpp::Node("gui_node"){
-      RCLCPP_INFO(this->get_logger(), "YO");
-      setFixedSize(100, 50);
-      // Create and position the button
-      publishButton_ = new QPushButton("Hello World", this);
-      publishButton_->setGeometry(10, 10, 80, 30);
+        
+        rclcpp::QoS qosSettings(rclcpp::KeepLast(10),rmw_qos_profile_sensor_data);
+
+        imageSubscriber_ = this->create_subscription<sensor_msgs::msg::Image>(
+        "/camera/color/image_rect_resize", qosSettings, std::bind(&Gui::cameraFrameRecieved, this, std::placeholders::_1));
+
+        this->setFixedSize(1920, 1080);
+        // Create and position the button
+        realsenseCameraFeed_ = new QLabel(this);
+        realsenseCameraFeed_->setGeometry(0,0,1920,1080);
+        this->show();
    }
 
    Gui::~Gui(){
+
+   }
+
+   void Gui::cameraFrameRecieved(sensor_msgs::msg::Image msg){
+        QImage::Format format = QImage::Format_RGB888;
+        QPixmap currentRealSenseCameraPixMap = QPixmap::fromImage(QImage(&msg.data[0], msg.width, msg.height, format));
+        realsenseCameraFeed_->setPixmap(currentRealSenseCameraPixMap);
 
    }
 
@@ -26,7 +39,6 @@ int main(int argc, char * argv[]){
     executor.add_node(gui);
 
     app.processEvents();
-    gui->show();
 
     while (rclcpp::ok())
     {

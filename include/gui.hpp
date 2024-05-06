@@ -1,10 +1,16 @@
 #include "rclcpp/rclcpp.hpp"
+#include "sensor_msgs/msg/image.hpp"
 
 #include <QApplication>
 #include <QMainWindow>
 #include <QWidget>
 #include <QPushButton>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QImage>
+#include <QLabel>
 #include <QBoxLayout>
+#include <QPixmap>
 
 namespace coral_cam{
     class Gui : public QWidget, public rclcpp::Node{
@@ -25,7 +31,7 @@ namespace coral_cam{
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Callbacks                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            void publish_button_clicked();
+            void cameraFrameRecieved(sensor_msgs::msg::Image msg);
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Private Methods                                                                                       //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +39,7 @@ namespace coral_cam{
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Node, Publishers and Subscribers                                                                      //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+            rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr imageSubscriber_;
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Constants                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,6 +48,9 @@ namespace coral_cam{
             // Variables                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
             QPushButton* publishButton_;
+            QLabel* realsenseCameraFeed_;
+            
+
             
     };
 }

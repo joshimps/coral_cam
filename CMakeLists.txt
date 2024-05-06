@@ -8,15 +8,21 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+
 find_package(PCL REQUIRED)
 find_package(pcl_conversions REQUIRED)
+
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Quick REQUIRED)
 find_package(Qt5Widgets REQUIRED)
+
+find_package(image_proc REQUIRED)
+
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -51,7 +57,7 @@ add_executable(coral_cam src/coralCam.cpp)
 target_link_libraries(coral_cam realsense_camera_component button_component gpio_component) 
 
 add_executable(gui include/gui.hpp src/gui.cpp)
-ament_target_dependencies(gui rclcpp_components rclcpp)
+ament_target_dependencies(gui rclcpp_components rclcpp sensor_msgs)
 target_link_libraries(gui Qt5::Core Qt5::Quick Qt5::Widgets)
 
 ament_export_targets(export_button_component)
