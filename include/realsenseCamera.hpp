@@ -2,11 +2,14 @@
 
 #include <std_msgs/msg/string.hpp>
 #include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/float64.hpp>
 
 #include <sensor_msgs/msg/point_cloud2.hpp>
 
 #include <pcl/PCLPointCloud2.h>
+#include <pcl/impl/point_types.hpp>
 #include <pcl/io/pcd_io.h>
+#include <pcl/common/centroid.h>
 #include <pcl_conversions/pcl_conversions.h>
 
 #include <memory>
@@ -61,7 +64,8 @@ namespace coral_cam{
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
             rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr realsenseSubscriber_;
             rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr buttonSubscriber_;
-            rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr capturedPointCloudPublisher_;
+            rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr centroidPublisher_;
+
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Constants                                                                                             //
@@ -73,6 +77,7 @@ namespace coral_cam{
 
             sensor_msgs::msg::PointCloud2 savedPointCloud_;
             pcl::PCLPointCloud2 savedPointCloudAsPcl_;
+            pcl::PointXYZ centroidPcl_;
             sensor_msgs::msg::PointCloud2 currentPointCloud_;
     };
 }

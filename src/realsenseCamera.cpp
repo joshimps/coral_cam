@@ -8,16 +8,16 @@ namespace coral_cam{
         "button_pressed_topic", 10, std::bind(&RealsenseCamera::savePointCloud, this, std::placeholders::_1));
         realsenseSubscriber_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
         "/camera/depth/color/points", 10, std::bind(&RealsenseCamera::readCurrentPointCloud, this, std::placeholders::_1));
+        centroidPublisher_ = this->create_publisher<std_msgs::msg::Float64>("centroidZ", 10);
 
         this->declare_parameter("point_cloud_path", "~/Documents");
     }
 
     void RealsenseCamera::savePointCloud(std_msgs::msg::Bool msg){
-        RCLCPP_INFO(this->get_logger(),"RECIEVED");
 
         if(msg.data){
             savedPointCloud_ = currentPointCloud_;
-            pcl_conversions::toPCL(currentPointCloud_,savedPointCloudAsPcl_);
+            
             writePointCloudtoFile();
         }
         else{
@@ -27,6 +27,13 @@ namespace coral_cam{
 
     void RealsenseCamera::readCurrentPointCloud(sensor_msgs::msg::PointCloud2 msg){
         currentPointCloud_ = msg;
+        pcl_conversions::toPCL(currentPointCloud_,savedPointCloudAsPcl_);
+        pcl::PointCloud<pcl::PointXYZ> pclObj;
+        pcl::fromPCLPointCloud2(savedPointCloudAsPcl_, pclObj);
+        pcl::computeCentroid(pclObj,centroidPcl_);
+        std_msgs::msg::Float64 centroidZ;
+        centroidZ.data = centroidPcl_.z;
+        centroidPublisher_->publish(centroidZ);
     }
 
     void RealsenseCamera::writePointCloudtoFile(){

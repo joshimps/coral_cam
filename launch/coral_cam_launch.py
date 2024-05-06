@@ -51,8 +51,8 @@ def generate_launch_description():
                         ],
                         parameters=[{
                             'use_scale':False,
-                            'height': 1080,
-                            'width': 1920,
+                            'width': 960,
+                            'height': 540,
                         }]
             )
                 ],
