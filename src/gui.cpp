@@ -23,7 +23,6 @@ namespace coral_cam{
         QImage::Format format = QImage::Format_RGB888;
         QPixmap currentRealSenseCameraPixMap = QPixmap::fromImage(QImage(&msg.data[0], msg.width, msg.height, format));
         realsenseCameraFeed_->setPixmap(currentRealSenseCameraPixMap);
-
    }
 
 }
