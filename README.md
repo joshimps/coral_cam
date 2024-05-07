@@ -12,9 +12,17 @@ This package is designed to be run and manage the different components of the un
 - **File Output**: Leverages the PCL library to output pcd files for easy capture anaylsis
 
 ## Installation
+Installation is assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squared V2.
+
+1. Install the pin control driver for the Upboard. Use the install guide found [here] https://github.com/up-division/pinctrl-upboard. Alternatively, use the commands below but please note the driver may be out of date.
+
+   `sudo apt install dkms`
+   `sudo dpkg -i pinctrl-upboard_1.1.3_all.deb`
+
 
 ## Requirements
 
+- Pinctrl Upboard
 - LGPIO
 - Realsense ROS
 - PCL
