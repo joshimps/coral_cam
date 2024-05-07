@@ -14,16 +14,13 @@ This package is designed to be run and manage the different components of the un
 ## Installation
 Installation is assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squared V2.
 
-1. Install the pin control driver for the Upboard. Use the install guide found [here](https://github.com/up-division/pinctrl-upboard). Alternatively, use the commands below but please note the driver may be out of date.
-
-   `sudo apt install dkms` \
-   `sudo dpkg -i pinctrl-upboard_1.1.3_all.deb` \
+1. Install the pin control driver for the Upboard. Use the install guide found [here](https://github.com/up-division/pinctrl-upboard).
    
 3. Install ROS 2 Humble from debian following the instructions found [here](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html#id2).
 
-
 4. Intall the latest Realsense SDK 2.0 following the instructions found [here](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md)
-5. 
+   
+
 
 ## Requirements
 
