@@ -1,5 +1,5 @@
 # Coral Cam
-This package is designed to be run and manage the different components of the underwater PAM system under development at UTS Rapido. The following hardware is required for operatiion.  return
+This package is designed to be run and manage the different components of the underwater PAM system under development at UTS Rapido. The following hardware is required for operation. \
 
 - UpBoard Squared V2
 - Intel Realsense D405
@@ -35,9 +35,7 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    `cd ~/pam_ws/` \
    `rosdep install -i --from-path src --rosdistro humble -y`
    
-
-   
-## Setup
+## Setup and Running
 
 ## Requirements
 
