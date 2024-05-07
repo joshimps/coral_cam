@@ -1,10 +1,5 @@
 # Coral Cam
-This package is designed to be run and manage the different components of the underwater PAM system under development at UTS Rapido. \
-The following hardware is required for operation. 
-
-- UpBoard Squared V2
-- Intel Realsense D405
-- PWM Buttons
+This package is designed to be run and manage the different components of the underwater PAM system under development at UTS Rapido. 
 
 ## Features
 
