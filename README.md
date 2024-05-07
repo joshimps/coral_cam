@@ -37,13 +37,4 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    
 ## Setup and Running
 
-## Requirements
 
-- Pinctrl Upboard
-- LGPIO
-- Realsense ROS
-- PCL
-
-https://abyz.me.uk/lg/lgpio.html  return 
-https://github.com/IntelRealSense/realsense-ros  return
-https://wiki.ros.org/perception_pcl  return
