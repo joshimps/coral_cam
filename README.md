@@ -1,5 +1,5 @@
 # Coral Cam
-This package is designed to be run and manage the different components of the underwater PAM system under development at UTS Rapido. 
+This package is designed to run and manage the different components of the underwater PAM system under development at UTS Rapido. 
 
 ## Features
 
