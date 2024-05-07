@@ -7,9 +7,9 @@ This package is designed to be run and manage the different components of the un
 
 ## Features
 
--**Parameterised**: Highly configurable using Ros Parameters, edit the launch file to change startup settings for the buttons, GUI, Realsense Camera and more
--**GUI Interface**: Enjoy a simple Qt GUI for easy interaction and monitoring
--**File Output**: Leverages the PCL library to output pcd files for easy capture anaylsis
+- **Parameterised**: Highly configurable using Ros Parameters, edit the launch file to change startup settings for the buttons, GUI, Realsense Camera and more
+- **GUI Interface**: Enjoy a simple Qt GUI for easy interaction and monitoring
+- **File Output**: Leverages the PCL library to output pcd files for easy capture anaylsis
 
 ## Installation
 
