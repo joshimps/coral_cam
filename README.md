@@ -26,22 +26,22 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
 
    `mkdir ~/git` \
    `cd ~/git` \
-   `git clone git://code.qt.io/qt/qt5.git`
-   `cd qt5`
-   `git checkout 5.15`
-   `perl init-repository`
+   `git clone git://code.qt.io/qt/qt5.git` \
+   `cd qt5` \
+   `git checkout 5.15` \
+   `perl init-repository` \
 
-   Create a location for the build files to live
+   Create a location for the build files to live \
    
-   `export LLVM_INSTALL_DIR=/usr/llvm`
-   `cd ~`
-   `mkdir qt5-build`
-   `cd qt5-build`
-   '~/git/qt5/configure -prefix /opt/Qt15 -opensource -nomake examples -nomake tests'
+   `export LLVM_INSTALL_DIR=/usr/llvm` \
+   `cd ~` \
+   `mkdir qt5-build` \
+   `cd qt5-build` \
+   '~/git/qt5/configure -prefix /opt/Qt15 -opensource -nomake examples -nomake tests' \
 
-   Make the modules we need, they should be installed to /opt/Qt15 as specified earlier
+   Make the modules we need, they should be installed to /opt/Qt15 as specified earlier \
 
-   `make module-qtbase`
+   `make module-qtbase` \
    `make module-qtdeclarative` \
    `make install`
    
