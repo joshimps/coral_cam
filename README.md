@@ -16,11 +16,13 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
 
 3. Intall the latest Realsense SDK 2.0 following the instructions found [here](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md).
 
-4. Install LGPIO following the instructions found [here](https://abyz.me.uk/lg/download.html)
-   
-5. Install PCL following the instructions found [here](https://pointclouds.org/downloads/#linux)
+4. Install the latest Intel Realsense ROS wrapper from debian following the instructions found [here](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md).
 
-6. Install QT 5.15 folllowing the instructions found below ([here](https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code) is used as a reference) You might want to go make a coffee because this is going to take a long time on the UpBoard.
+5. Install LGPIO following the instructions found [here](https://abyz.me.uk/lg/download.html)
+   
+6. Install PCL following the instructions found [here](https://pointclouds.org/downloads/#linux)
+
+7. Install QT 5.15 folllowing the instructions found below ([here](https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code) is used as a reference) You might want to go make a coffee because this is going to take a long time on the UpBoard.
 
    Choose a location for the source files to live
 
@@ -46,29 +48,30 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    `make install`
    
    
-7. Create a git folder (if not done in previous step) and clone this package to it. Create a ros workspace and then symbolic link this package to the src of the workspace.
+8. Create a git folder (if not done in previous step) and clone this package to it. Create a ros workspace and then symbolic link this package to the src of the workspace.
 
    `cd ~/git` \
    `git clone https://github.com/joshimps/coral_cam.git` \
    `mkdir -p ~/pam_ws/src` \
    `cd ~/pam_ws/src` \
-   `ln -s ~/git/coral_cam/ .` 
+   `ln -s ~/git/coral_cam/ .`
 
-8. Source the ROS overlay, you may want to add this to your .bashrc
 
-    `source /opt/ros/humble/setup.bash` 
+9. Source the ROS overlay, you may want to add this to your .bashrc
+
+    `source /opt/ros/humble/setup.bash`
    
-9. Resolve the depenencies for the coral_cam package
+10. Resolve the depenencies for the coral_cam package
 
    `cd ~/pam_ws/` \
    `rosdep install -i --from-path src --rosdistro humble -y`
 
-10. Build the package
+11. Build the package
 
     `cd ~/pam_ws/` \
     `colcon build`
 
-11. Source the underlay, you may want to add this to your .bashrc
+12. Source the underlay, you may want to add this to your .bashrc
 
     `cd ~/pam_ws/` \
     `source install/local_setup.bash`
