@@ -32,19 +32,16 @@ namespace coral_cam{
 
             /**
             Saves the current point cloud seen by the Intel Realsense camera
-            
             */
             void savePointCloud(std_msgs::msg::Bool msg);
 
             /**
             Writes the currently held point cloud by currentPointCloud_ to a .pcd file
-
             */
             void writePointCloudtoFile();
 
             /**
             Returns the current point cloud save in currentPointCloud_;
-            @return capture successful
             */
             void readCurrentPointCloud(sensor_msgs::msg::PointCloud2 msg);
 
