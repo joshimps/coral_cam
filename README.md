@@ -20,7 +20,7 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    
 5. Install PCL following the instructions found [here](https://pointclouds.org/downloads/#linux)
 
-6. Install QT 5.15 folllowing the instructions found below ([here](https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code) is used as a reference)
+6. Install QT 5.15 folllowing the instructions found below ([here](https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code) is used as a reference) You might want to go make a coffee because this is going to take a long time on the UpBoard.
 
    Choose a location for the source files to live
 
