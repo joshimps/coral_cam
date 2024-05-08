@@ -77,7 +77,7 @@ target_link_libraries(coral_cam realsense_camera_component button_component gpio
 
 add_executable(gui include/gui.hpp src/gui.cpp)
 ament_target_dependencies(gui rclcpp_components rclcpp sensor_msgs)
-target_link_libraries(gui Qt5Core Qt5Quick Qt5Widgets)
+target_link_libraries(gui Qt5::Core Qt5::Quick Qt5::Widgets)
 
 ament_export_targets(export_button_component)
 ament_export_targets(export_realsense_camera_component)
