@@ -24,8 +24,9 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    
 7. Install PCL following the instructions found [here](https://pointclouds.org/downloads/#linux)
 
-9. Create a git folder (if not done in previous step) and clone this package to it. Create a ros workspace and then symbolic link this package to the src of the workspace.
+9. Create a git folder and clone this package to it. Create a ros workspace and then symbolic link this package to the src of the workspace.
 
+   `mkdir ~/git` \
    `cd ~/git` \
    `git clone https://github.com/joshimps/coral_cam.git` \
    `mkdir -p ~/pam_ws/src` \
