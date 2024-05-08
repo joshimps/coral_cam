@@ -33,10 +33,10 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
 
 9. Source the ROS overlay, you may want to add this to your .bashrc
 
-    `source /opt/ros/humble/setup.bash`
+   `source /opt/ros/humble/setup.bash`
    
-10. Resolve the depenencies for the coral_cam package
-
+11. Resolve the depenencies for the coral_cam package.
+   
    `cd ~/pam_ws/` \
    `rosdep install -i --from-path src --rosdistro humble -y`
 
