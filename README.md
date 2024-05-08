@@ -41,12 +41,12 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
 
    Make the modules we need, they should be installed to /opt/Qt15 as specified earlier
 
-   make module-qtbase
-   make module-qtdeclarative
-   make install
+   `make module-qtbase`
+   `make module-qtdeclarative` \
+   `make install`
    
    
-8. Create a git folder (if not done in previous step) and clone this package to it. Create a ros workspace and then symbolic link this package to the src of the workspace.
+7. Create a git folder (if not done in previous step) and clone this package to it. Create a ros workspace and then symbolic link this package to the src of the workspace.
 
    `cd ~/git` \
    `git clone https://github.com/joshimps/coral_cam.git` \
@@ -54,21 +54,21 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    `cd ~/pam_ws/src` \
    `ln -s ~/git/coral_cam/ .` 
 
-9. Source the ROS overlay, you may want to add this to your .bashrc
+8. Source the ROS overlay, you may want to add this to your .bashrc
 
     `source /opt/ros/humble/setup.bash` 
    
-10. Resolve the depenencies for the coral_cam package
+9. Resolve the depenencies for the coral_cam package
 
    `cd ~/pam_ws/` \
    `rosdep install -i --from-path src --rosdistro humble -y`
 
-11. Build the package
+10. Build the package
 
     `cd ~/pam_ws/` \
     `colcon build`
 
-12. Source the underlay, you may want to add this to your .bashrc
+11. Source the underlay, you may want to add this to your .bashrc
 
     `cd ~/pam_ws/` \
     `source install/local_setup.bash`
