@@ -29,7 +29,7 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    `git clone https://github.com/joshimps/coral_cam.git`
    `mkdir -p ~/pam_ws/src` \
    `cd ~/pam_ws/src` \
-   `ln -s ~/git/coral_cam/ . ` \
+   `ln -s ~/git/coral_cam/ .` 
 
 
 9. Resolve the depenencies for the coral_cam package
