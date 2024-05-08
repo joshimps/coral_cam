@@ -14,17 +14,9 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    
 2. Install ROS 2 Humble from debian following the instructions found [here](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html#id2).
 
-3. Intall the latest Realsense SDK 2.0 following the instructions found [here](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md).
+3. Install LGPIO following the instructions found [here](https://abyz.me.uk/lg/download.html)
 
-4. Install the latest Intel Realsense ROS wrapper from debian
-
-   `sudo apt install ros-humble-realsense2-*`
-
-6. Install LGPIO following the instructions found [here](https://abyz.me.uk/lg/download.html)
-   
-7. Install PCL following the instructions found [here](https://pointclouds.org/downloads/#linux)
-
-9. Create a git folder and clone this package to it. Create a ros workspace and then symbolic link this package to the src of the workspace.
+4. Create a git folder and clone this package to it. Create a ros workspace and then symbolic link this package to the src of the workspace.
 
    `mkdir ~/git` \
    `cd ~/git` \
@@ -34,21 +26,21 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    `ln -s ~/git/coral_cam/ .`
 
 
-10. Source the ROS overlay, you may want to add this to your .bashrc
+5. Source the ROS overlay, you may want to add this to your .bashrc
 
     `source /opt/ros/humble/setup.bash`
    
-11. Resolve the depenencies for the coral_cam package
+6. Resolve the depenencies for the coral_cam package
 
    `cd ~/pam_ws/` \
    `rosdep install -i --from-path src --rosdistro humble -y`
 
-11. Build the package
+7. Build the package
 
     `cd ~/pam_ws/` \
     `colcon build`
 
-12. Source the underlay, you may want to add this to your .bashrc
+8. Source the underlay, you may want to add this to your .bashrc
 
     `cd ~/pam_ws/` \
     `source install/local_setup.bash`
