@@ -12,17 +12,17 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
 
 1. Install the pin control driver for the Upboard following the instructions found [here](https://github.com/up-division/pinctrl-upboard).
    
-3. Install ROS 2 Humble from debian following the instructions found [here](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html#id2).
+2. Install ROS 2 Humble from debian following the instructions found [here](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html#id2).
 
-4. Intall the latest Realsense SDK 2.0 following the instructions found [here](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md).
+3. Intall the latest Realsense SDK 2.0 following the instructions found [here](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md).
 
-5. Install LGPIO following the instructions found [here](https://abyz.me.uk/lg/download.html)
+4. Install LGPIO following the instructions found [here](https://abyz.me.uk/lg/download.html)
    
-6. Install PCL following the instructions found [here](https://pointclouds.org/downloads/#linux)
+5. Install PCL following the instructions found [here](https://pointclouds.org/downloads/#linux)
 
-7. Install QT 5.12 folllowing the instructions found [here](https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code), remember to checkout 5.15.2 and also use the option `--module-subset=default,-qtwebengine` when initiliasing the repoistory to save space.
+6. Install QT 5.12 folllowing the instructions found [here](https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code), remember to checkout 5.15.2 and also use the option `--module-subset=default,-qtwebengine` when initiliasing the repoistory to save space.
 
-8. Create a Ros Workspace and clone this package to it
+7. Create a Ros Workspace and clone this package to it
 
    `mkdir ~/git` \
    `cd ~/git` \
@@ -31,21 +31,21 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    `cd ~/pam_ws/src` \
    `ln -s ~/git/coral_cam/ .` 
 
-9. Source the ROS overlay, you may want to add this to your .bashrc
+8. Source the ROS overlay, you may want to add this to your .bashrc
 
-   `source /opt/ros/humble/setup.bash`
+    `source /opt/ros/humble/setup.bash` 
    
-11. Resolve the depenencies for the coral_cam package.
-   
+9. Resolve the depenencies for the coral_cam package
+
    `cd ~/pam_ws/` \
    `rosdep install -i --from-path src --rosdistro humble -y`
 
-11. Build the package
+10. Build the package
 
     `cd ~/pam_ws/` \
     `colcon build`
 
-12. Source the underlay, you may want to add this to your .bashrc
+11. Source the underlay, you may want to add this to your .bashrc
 
     `cd ~/pam_ws/` \
     `source install/local_setup.bash`
