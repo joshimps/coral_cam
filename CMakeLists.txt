@@ -21,8 +21,10 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Quick REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
+find_package(std_msgs REQUIRED)
 find_package(image_proc REQUIRED)
 
+find_library(lgpio)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -41,12 +43,12 @@ include_directories(
 add_library(button_component SHARED src/button.cpp)
 rclcpp_components_register_nodes(button_component "coral_cam::Button")
 ament_target_dependencies(button_component rclcpp rclcpp_components std_msgs sensor_msgs)
-target_link_libraries(button_component lgpio )
+target_link_libraries(button_component lgpio)
 
 add_library(realsense_camera_component SHARED src/realsenseCamera.cpp)
 rclcpp_components_register_nodes(realsense_camera_component "coral_cam::RealsenseCamera")
 ament_target_dependencies(realsense_camera_component rclcpp_components rclcpp std_msgs sensor_msgs pcl_conversions)
-target_link_libraries(realsense_camera_component ${PCL_LIBRARIES} )
+target_link_libraries(realsense_camera_component ${PCL_LIBRARIES})
 
 add_library(gpio_component SHARED src/gpio.cpp)
 rclcpp_components_register_nodes(gpio_component "coral_cam::Gpio")
