@@ -13,6 +13,7 @@
   <depend>sensor_msgs</depend>
 
   <depend>librealsense2</depend>
+  <depend>realsense2_camera</depend>
   <depend>pcl_conversions</depend>
   <depend>image_proc</depend>
 

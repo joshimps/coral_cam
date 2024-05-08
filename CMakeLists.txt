@@ -24,17 +24,29 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Quick REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
-#Ros Community Packages
-find_package(ros-humble-realsense2 REQUIRED)
+#Realsense
+find_package(realsense2 REQUIRED)
+find_package(realsense2_camera REQUIRED)
+
+#Image Processing
 find_package(image_proc REQUIRED)
 
 #LGPIO
-find_library(lgpio)
+find_library(LGPIO_FOUND lgpio)
 
+if(NOT LGPIO_FOUND)
+        message(FATAL_ERROR "LGPIO NOT FOUND")
+else()
+        message("LGPIO FOUND")
+endif()
+
+#For QT5 Build
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+
+#For PCL Build
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
@@ -65,7 +77,7 @@ target_link_libraries(coral_cam realsense_camera_component button_component gpio
 
 add_executable(gui include/gui.hpp src/gui.cpp)
 ament_target_dependencies(gui rclcpp_components rclcpp sensor_msgs)
-target_link_libraries(gui Qt5::Core Qt5::Quick Qt5::Widgets)
+target_link_libraries(gui Qt5Core Qt5Quick Qt5Widgets)
 
 ament_export_targets(export_button_component)
 ament_export_targets(export_realsense_camera_component)
