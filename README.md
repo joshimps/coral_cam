@@ -20,7 +20,7 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    
 6. Install PCL following the instructions found [here](https://pointclouds.org/downloads/#linux)
 
-7. Install QT 5.15.2 folllowing the instructions found [here](https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code)
+7. Install QT 5.15.2 folllowing the instructions found [here](https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code), remember to checkout 5.15.2 and also use the option `--module-subset=default,-qtwebengine` when initiliasing the repoistory to save space.
 
 8. Create a Ros Workspace and clone this package to it
 
