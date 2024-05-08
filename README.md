@@ -29,9 +29,9 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    `git clone git://code.qt.io/qt/qt5.git` \
    `cd qt5` \
    `git checkout 5.15` \
-   `perl init-repository` \
+   `perl init-repository` 
 
-   Create a location for the build files to live \
+   Create a location for the build files to live 
    
    `export LLVM_INSTALL_DIR=/usr/llvm` \
    `cd ~` \
