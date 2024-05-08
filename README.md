@@ -20,13 +20,19 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    
 6. Install PCL following the instructions found [here](https://pointclouds.org/downloads/#linux)
 
-7. Create a Ros Workspace and clone this package to it
+7. Install QT5 folllowing the instructions found [here](https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code)
 
+8. Create a Ros Workspace and clone this package to it
+
+   `mkdir ~/git` \
+   `cd ~/git` \
+   `git clone https://github.com/joshimps/coral_cam.git`
    `mkdir -p ~/pam_ws/src` \
    `cd ~/pam_ws/src` \
-   `https://github.com/joshimps/coral_cam.git`
+   `ln -s ~/git/coral_cam/ . ` \
 
-8. Resolve the depenencies for the coral_cam package
+
+9. Resolve the depenencies for the coral_cam package
 
    `cd ~/pam_ws/` \
    `rosdep install -i --from-path src --rosdistro humble -y`
