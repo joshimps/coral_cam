@@ -31,11 +31,24 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    `cd ~/pam_ws/src` \
    `ln -s ~/git/coral_cam/ .` 
 
+9. Source the ROS overlay, you may want to add this to your .bashrc
 
-9. Resolve the depenencies for the coral_cam package
+    `source /opt/ros/humble/setup.bash`
+   
+10. Resolve the depenencies for the coral_cam package
 
    `cd ~/pam_ws/` \
    `rosdep install -i --from-path src --rosdistro humble -y`
+
+11. Build the package
+
+    `cd ~/pam_ws/` \
+    `colcon build`
+
+12. Source the underlay, you may want to add this to your .bashrc
+
+    `cd ~/pam_ws/` \
+    `source install/local_setup.bash`
    
 ## Setup and Running
 
