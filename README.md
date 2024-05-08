@@ -20,32 +20,55 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    
 5. Install PCL following the instructions found [here](https://pointclouds.org/downloads/#linux)
 
-6. Install QT 5.15 folllowing the instructions found [here](https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code), remember to checkout 5.15 as this contains a fix for compiling on gcc 11 and also use the option `--module-subset=default,-qtwebengine` when initiliasing the repoistory to save space.
+6. Install QT 5.15 folllowing the instructions found below ([here](https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code) is used as a reference)
 
-7. Create a Ros Workspace and clone this package to it
+   Choose a location for the source files to live
 
    `mkdir ~/git` \
+   `cd ~/git` \
+   `git clone git://code.qt.io/qt/qt5.git`
+   `cd qt5`
+   `git checkout 5.15`
+   `perl init-repository`
+
+   Create a location for the build files to live
+   
+   `export LLVM_INSTALL_DIR=/usr/llvm`
+   `cd ~`
+   `mkdir qt5-build`
+   `cd qt5-build`
+   '~/git/qt5/configure -prefix /opt/Qt15 -opensource -nomake examples -nomake tests'
+
+   Make the modules we need, they should be installed to /opt/Qt15 as specified earlier
+
+   make module-qtbase
+   make module-qtdeclarative
+   make install
+   
+   
+8. Create a git folder (if not done in previous step) and clone this package to it. Create a ros workspace and then symbolic link this package to the src of the workspace.
+
    `cd ~/git` \
    `git clone https://github.com/joshimps/coral_cam.git` \
    `mkdir -p ~/pam_ws/src` \
    `cd ~/pam_ws/src` \
    `ln -s ~/git/coral_cam/ .` 
 
-8. Source the ROS overlay, you may want to add this to your .bashrc
+9. Source the ROS overlay, you may want to add this to your .bashrc
 
     `source /opt/ros/humble/setup.bash` 
    
-9. Resolve the depenencies for the coral_cam package
+10. Resolve the depenencies for the coral_cam package
 
    `cd ~/pam_ws/` \
    `rosdep install -i --from-path src --rosdistro humble -y`
 
-10. Build the package
+11. Build the package
 
     `cd ~/pam_ws/` \
     `colcon build`
 
-11. Source the underlay, you may want to add this to your .bashrc
+12. Source the underlay, you may want to add this to your .bashrc
 
     `cd ~/pam_ws/` \
     `source install/local_setup.bash`
