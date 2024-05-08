@@ -37,9 +37,9 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
    `cd ~` \
    `mkdir qt5-build` \
    `cd qt5-build` \
-   '~/git/qt5/configure -prefix /opt/Qt15 -opensource -nomake examples -nomake tests' \
+   `~/git/qt5/configure -prefix /opt/Qt15 -opensource -nomake examples -nomake tests` 
 
-   Make the modules we need, they should be installed to /opt/Qt15 as specified earlier \
+   Make the modules we need, they should be installed to /opt/Qt15 as specified earlier 
 
    `make module-qtbase` \
    `make module-qtdeclarative` \
