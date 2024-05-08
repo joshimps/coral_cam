@@ -9,21 +9,26 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 
+#Ros Standard Packages
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 
+#PCL
 find_package(PCL REQUIRED)
 find_package(pcl_conversions REQUIRED)
 
+#QT5
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Quick REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
-find_package(std_msgs REQUIRED)
+#Ros Community Packages
+find_package(ros-humble-realsense2 REQUIRED)
 find_package(image_proc REQUIRED)
 
+#LGPIO
 find_library(lgpio)
 
 set(CMAKE_AUTOMOC ON)
