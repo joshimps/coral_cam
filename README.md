@@ -26,7 +26,7 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
 
    `mkdir ~/git` \
    `cd ~/git` \
-   `git clone https://github.com/joshimps/coral_cam.git`
+   `git clone https://github.com/joshimps/coral_cam.git` \
    `mkdir -p ~/pam_ws/src` \
    `cd ~/pam_ws/src` \
    `ln -s ~/git/coral_cam/ .` 
