@@ -6,7 +6,7 @@
 namespace coral_cam{
 
     Button::Button(const rclcpp::NodeOptions &options):Node("button_node",options){
-        buttonPressedPublisher_ = this->create_publisher<std_msgs::msg::Bool>("button_value", 100);
+        buttonPressedPublisher_ = this->create_publisher<std_msgs::msg::Bool>("button_value", 10);
 
         gpioHandleSubscriber_ = this->create_subscription<std_msgs::msg::Int64>(
         "gpio_handle_topic", 10, std::bind(&Button::setGpioHandle, this, std::placeholders::_1));
@@ -19,7 +19,7 @@ namespace coral_cam{
         pinConfigured_ = false;
         gpioHandle_ = -1;
         buttonPinNumber_ = -1;
-        timer_ = this->create_wall_timer(1000ms, std::bind(&Button::readPin, this));
+        timer_ = this->create_wall_timer(10ms, std::bind(&Button::readPin, this));
     }
 
     int Button::setGpioHandle(std_msgs::msg::Int64 msg){
