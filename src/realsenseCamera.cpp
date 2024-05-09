@@ -1,9 +1,11 @@
-//After lights have been triggered takes a capture
-
 #include "realsenseCamera.hpp"
+#include "helpers.hpp"
 
 namespace coral_cam{
     RealsenseCamera::RealsenseCamera(const rclcpp::NodeOptions & options):Node("realsense_camera_node",options){
+
+        this->declare_parameter("point_cloud_path", "~/Documents");
+        this->declare_parameter("number_of_captures", 10);
 
         buttonSubscriber_ = this->create_subscription<std_msgs::msg::Bool>(
         "button_value", 10, std::bind(&RealsenseCamera::savePointCloud, this, std::placeholders::_1));
@@ -16,9 +18,9 @@ namespace coral_cam{
         currentButtonValue_ = 0;
         previousButtonValue_ = 0;
 
-        this->declare_parameter("point_cloud_path", "~/Documents");
-        this->declare_parameter("number_of_captures", 10);
-
+        path_ = this->get_parameter("point_cloud_path").as_string() + "/pcd_file_" +  getCurrentTime() + ".pcd";
+        numberOfFiles_ = 0;
+        numberOfFilesToSave_ = 0;
     }
 
     void RealsenseCamera::savePointCloud(std_msgs::msg::Bool msg){
@@ -30,40 +32,38 @@ namespace coral_cam{
 
         if(currentButtonValue_ == 0 && previousButtonValue_ == 1){
 
-            int numberOfCaptures = this->get_parameter("number_of_captures").as_int();
-
-            for(int i = 0; i < numberOfCaptures; i++){
-                pcl::PCLPointCloud2 pointCloudAsPcl_;
-                writePointCloudtoFile(savedPointCloudAsPcl_);
-            }   
+            numberOfFilesToSave_ = this->get_parameter("number_of_captures").as_int();
         }
     }
 
     void RealsenseCamera::readCurrentPointCloud(sensor_msgs::msg::PointCloud2 msg){
         currentPointCloud_ = msg;
         pcl_conversions::toPCL(currentPointCloud_,savedPointCloudAsPcl_);
+
+        if(numberOfFilesToSave_ > 0){
+            writePointCloudtoFile(savedPointCloudAsPcl_);
+            numberOfFilesToSave_--;
+        }
     }
 
     void RealsenseCamera::writePointCloudtoFile(pcl::PCLPointCloud2 pointcloud){
         Eigen::Vector4f zero = Eigen::Vector4f::Zero();
         Eigen::Quaternionf identity = Eigen::Quaternionf::Identity();
+        const char* pathChar = path_.c_str(); 
 
-        tm * currentLocalTime;
-        time_t currentTime;
+        if(fileExists(pathChar)){
+            RCLCPP_INFO(this->get_logger(),"FILE EXISTS");
+            numberOfFiles_++;
+            path_ = this->get_parameter("point_cloud_path").as_string() + "/pcd_file_" +  getCurrentTime() + "_" + std::to_string(numberOfFiles_) + ".pcd";
+            RCLCPP_INFO(this->get_logger(), "NEW PATH: %s ",path_.c_str());
+        }
+        else{
+            numberOfFiles_ = 0;
+        }
 
-        char dateString[100];
-	    char timeString[100];
-
-        time(&currentTime);
-	    currentLocalTime = localtime(&currentTime);
-        
-        strftime(dateString, 50, "%d%m%y", currentLocalTime);
-	    strftime(timeString, 50, "%H%M%S", currentLocalTime);
-
-        std::string path = this->get_parameter("point_cloud_path").as_string() + "/pcd_file_" + dateString + "_" +timeString + ".pcd";
-
-        pcl::io::savePCDFile(path,pointcloud,zero,identity,true);
+        pcl::io::savePCDFile(path_,pointcloud,zero,identity,true);
     }
+    
 }
 
 #include <rclcpp_components/register_node_macro.hpp>

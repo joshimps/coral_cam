@@ -25,7 +25,6 @@ namespace coral_cam{
     int Button::setGpioHandle(std_msgs::msg::Int64 msg){
 
         if(msg.data >= 0){
-            RCLCPP_INFO(this->get_logger(), "GPIO HANDLE SET: %ld", msg.data);
             gpioHandle_ = msg.data;
             return 0;
         }
@@ -37,7 +36,6 @@ namespace coral_cam{
 
     int Button::setButtonPin(std_msgs::msg::Int64 msg){
         if(msg.data >= 0){
-            RCLCPP_INFO(this->get_logger(), "BUTTON PIN NUMBER SET: %ld", msg.data);
             buttonPinNumber_ = msg.data;
             return 0;
         }
@@ -55,7 +53,7 @@ namespace coral_cam{
         if(pinConfigured_ == false && buttonPinNumber_ > -1 && gpioHandle_ > -1){
             lgGpioClaimInput(gpioHandle_,lflags_,buttonPinNumber_);
             lgGpioSetDebounce(gpioHandle_,buttonPinNumber_,this->get_parameter("debounce_time_us").as_int());
-            RCLCPP_INFO(this->get_logger(), "PIN CONFIGURED");
+            RCLCPP_INFO(this->get_logger(), "GPIO PIN: %d AT GPIO HANDLE: %d HAS BEEN CONFIGURED WITH DEBOUNCE TIME %ld MICROSECONDS",buttonPinNumber_,gpioHandle_,this->get_parameter("debounce_time_us").as_int());
             pinConfigured_ = true;
         }
         else if(buttonPinNumber_ < 0 ){
@@ -74,6 +72,7 @@ namespace coral_cam{
             buttonPressedPublisher_->publish(buttonPressedMessage_);
         }
         else{
+            RCLCPP_INFO(this->get_logger(), "BAD PIN READ, CHECK GPIO CONFIGURATION");
             return;
         }
     }

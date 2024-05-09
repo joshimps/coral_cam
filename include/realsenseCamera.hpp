@@ -12,9 +12,6 @@
 #include <pcl/common/centroid.h>
 #include <pcl_conversions/pcl_conversions.h>
 
-#include <memory>
-#include <string>
-#include <ctime>
 
 namespace coral_cam{
     class RealsenseCamera: public rclcpp::Node{
@@ -75,7 +72,9 @@ namespace coral_cam{
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Variables                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+            std::string path_;
+            int numberOfFiles_;
+            int numberOfFilesToSave_;
             sensor_msgs::msg::PointCloud2 savedPointCloud_;
             pcl::PCLPointCloud2 savedPointCloudAsPcl_;
             pcl::PointXYZ centroidPcl_;
