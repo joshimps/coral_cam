@@ -84,6 +84,7 @@ target_link_libraries(gui Qt5::Core Qt5::Quick Qt5::Widgets)
 ament_export_targets(export_button_component)
 ament_export_targets(export_realsense_camera_component)
 ament_export_targets(export_gpio_component)
+ament_export_targets(export_helpers)
 
 install(TARGETS button_component
         EXPORT export_button_component
@@ -101,6 +102,13 @@ install(TARGETS realsense_camera_component
 
 install(TARGETS gpio_component
         EXPORT export_gpio_component
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
+)
+
+install(TARGETS helpers
+        EXPORT export_helpers
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin
