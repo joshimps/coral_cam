@@ -23,7 +23,7 @@ def generate_launch_description():
                         name='button_node',
                         namespace='coral_cam',
                         extra_arguments=[{'use_intra_process_comms': True}],
-                        parameters = [{"debounce_time_us":20000}],
+                        parameters = [{"debounce_time_us":10000}],
                     ),
                     ComposableNode(
                         package='coral_cam',
