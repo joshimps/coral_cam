@@ -12,12 +12,16 @@ namespace coral_cam{
 
         gpioNumber_ = this->get_parameter("gpio_number").as_int();
         buttonPin_ = this->get_parameter("button_pin").as_int(); 
+        gpioHandle_ = lgGpiochipOpen(gpioNumber_);
+
 
         gpioHandlePublisher_ = this->create_publisher<std_msgs::msg::Int64>("gpio_handle_topic", 10);
         buttonPinPublisher_ = this->create_publisher<std_msgs::msg::Int64>("button_pin_topic", 10);
 
         gpioHandleMessage_.data = gpioHandle_;
         buttonPinMessage_.data = buttonPin_;
+
+        RCLCPP_INFO(this->get_logger(), "NEW HANDLE: %d ",gpioHandle_);
 
         gpioHandlePublisher_->publish(gpioHandleMessage_);
         buttonPinPublisher_->publish(buttonPinMessage_);
