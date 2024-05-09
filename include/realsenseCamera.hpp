@@ -36,14 +36,15 @@ namespace coral_cam{
             void savePointCloud(std_msgs::msg::Bool msg);
 
             /**
-            Writes the currently held point cloud by currentPointCloud_ to a .pcd file
+            Writes the supplied pcl point cloud to a .pcd file
             */
-            void writePointCloudtoFile();
+            void writePointCloudtoFile(pcl::PCLPointCloud2 pointcloud);
 
             /**
             Returns the current point cloud save in currentPointCloud_;
             */
             void readCurrentPointCloud(sensor_msgs::msg::PointCloud2 msg);
+
 
         private:
 
@@ -68,6 +69,9 @@ namespace coral_cam{
             // Constants                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Variables                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,5 +80,7 @@ namespace coral_cam{
             pcl::PCLPointCloud2 savedPointCloudAsPcl_;
             pcl::PointXYZ centroidPcl_;
             sensor_msgs::msg::PointCloud2 currentPointCloud_;
-    };
+            int currentButtonValue_;
+            int previousButtonValue_;
+    };  
 }

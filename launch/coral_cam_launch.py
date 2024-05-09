@@ -23,13 +23,15 @@ def generate_launch_description():
                         name='button_node',
                         namespace='coral_cam',
                         extra_arguments=[{'use_intra_process_comms': True}],
+                        parameters = [{"debounce_time_us":20000}],
                     ),
                     ComposableNode(
                         package='coral_cam',
                         plugin='coral_cam::RealsenseCamera',
                         name='realsense_camera_node',
                         namespace='coral_cam',
-                        parameters = [{"point_cloud_path":"/home/josh/git/coral_cam/clouds"}],
+                        parameters = [{"point_cloud_path":"/home/pam/git/coral_cam/clouds",
+                                       "number_of_captures":10}],
                         extra_arguments=[{'use_intra_process_comms': True}],
                     ),
                     ComposableNode(

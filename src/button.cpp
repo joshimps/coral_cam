@@ -6,13 +6,15 @@
 namespace coral_cam{
 
     Button::Button(const rclcpp::NodeOptions &options):Node("button_node",options){
-        buttonPressedPublisher_ = this->create_publisher<std_msgs::msg::Bool>("button_pressed_topic", 10);
+        buttonPressedPublisher_ = this->create_publisher<std_msgs::msg::Bool>("button_value", 100);
 
         gpioHandleSubscriber_ = this->create_subscription<std_msgs::msg::Int64>(
         "gpio_handle_topic", 10, std::bind(&Button::setGpioHandle, this, std::placeholders::_1));
 
         buttonPinSubscriber_ = this->create_subscription<std_msgs::msg::Int64>(
         "button_pin_topic", 10, std::bind(&Button::setButtonPin, this, std::placeholders::_1));
+
+        this->declare_parameter("debounce_time_us", 20000);
 
         pinConfigured_ = false;
         gpioHandle_ = -1;
@@ -29,7 +31,6 @@ namespace coral_cam{
         }
         else{
             RCLCPP_ERROR(this->get_logger(), "INVALID GPIO HANDLE: %ld", msg.data);
-            
             return 1;
         }
     }
@@ -53,6 +54,7 @@ namespace coral_cam{
         //If pin has not been configured and it has valid inputs configure the pin
         if(pinConfigured_ == false && buttonPinNumber_ > -1 && gpioHandle_ > -1){
             lgGpioClaimInput(gpioHandle_,lflags_,buttonPinNumber_);
+            lgGpioSetDebounce(gpioHandle_,buttonPinNumber_,this->get_parameter("debounce_time_us").as_int());
             RCLCPP_INFO(this->get_logger(), "PIN CONFIGURED");
             pinConfigured_ = true;
         }
@@ -67,7 +69,7 @@ namespace coral_cam{
 
         pinValue = lgGpioRead(gpioHandle_, buttonPinNumber_);
 
-        if(pinValue == 1){
+        if(pinValue == 1 || pinValue == 0){
             buttonPressedMessage_.data = pinValue;
             buttonPressedPublisher_->publish(buttonPressedMessage_);
         }
