@@ -8,12 +8,10 @@ namespace coral_cam{
         this->declare_parameter("number_of_captures", 10);
 
         buttonSubscriber_ = this->create_subscription<std_msgs::msg::Bool>(
-        "button_value", 10, std::bind(&RealsenseCamera::savePointCloud, this, std::placeholders::_1));
+        "pin_value", 10, std::bind(&RealsenseCamera::savePointCloud, this, std::placeholders::_1));
 
         realsenseSubscriber_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
-        "/camera/depth/color/points", 10, std::bind(&RealsenseCamera::readCurrentPointCloud, this, std::placeholders::_1));
-
-        centroidPublisher_ = this->create_publisher<std_msgs::msg::Float64>("centroidZ", 10);
+        "/real_sense/depth/color/points", 10, std::bind(&RealsenseCamera::readCurrentPointCloud, this, std::placeholders::_1));
 
         currentButtonValue_ = 0;
         previousButtonValue_ = 0;

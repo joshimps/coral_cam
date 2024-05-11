@@ -69,6 +69,7 @@ namespace coral_cam{
             int gpioHandle_;
             int buttonPinNumber_;
             bool pinConfigured_;
+            bool readError_;
             std_msgs::msg::Bool buttonPressedMessage_;
 
     };  

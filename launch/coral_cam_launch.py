@@ -10,6 +10,10 @@ from launch.actions import ExecuteProcess
 
 
 def generate_launch_description():
+    
+    debounce_time_us = 10000
+    
+    
     return LaunchDescription([
         ComposableNodeContainer(
                 name='coral_cam_container',
@@ -23,7 +27,7 @@ def generate_launch_description():
                         name='button_node',
                         namespace='coral_cam',
                         extra_arguments=[{'use_intra_process_comms': True}],
-                        parameters = [{"debounce_time_us":10000}],
+                        parameters = [{"debounce_time_us":debounce_time_us}],
                     ),
                     ComposableNode(
                         package='coral_cam',
@@ -47,9 +51,10 @@ def generate_launch_description():
                         plugin='image_proc::ResizeNode',
                         name='resize_node',
                         remappings=[
-                            ('image/image_raw', '/camera/color/image_rect_raw'),
-                            ('/image/camera_info','/camera/color/camera_info'),
-                            ('/resize/image_raw','/camera/color/image_rect_resize')
+                            ('image/image_raw', '/real_sense/color/image_rect_raw'),
+                            ('/image/camera_info','/real_sense/color/camera_info'),
+                            ('/resize/image_raw','/real_sense/color/image_rect_resized'),
+                            ('/resize/camera_info','/real_sense/color/camera_info_resized')
                         ],
                         parameters=[{
                             'use_scale':False,
@@ -71,6 +76,7 @@ def generate_launch_description():
          get_package_share_directory('coral_cam'), 'launch'),
          '/realsense_camera_launch.py']),
         launch_arguments={'camera_name': 'D405',
+                          'camera_namespace':'real_sense',
                           'pointcloud.enable': 'true',
                           'pointcloud.ordered_pc':'true',
                           'enable_sync':'true',

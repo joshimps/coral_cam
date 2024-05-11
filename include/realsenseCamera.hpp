@@ -59,8 +59,6 @@ namespace coral_cam{
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
             rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr realsenseSubscriber_;
             rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr buttonSubscriber_;
-            rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr centroidPublisher_;
-
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Constants                                                                                             //
