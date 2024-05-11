@@ -35,8 +35,7 @@ namespace coral_cam{
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Callbacks                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            void cameraFrameRecieved(sensor_msgs::msg::Image msg);
-            void centroidFrameRecieved(std_msgs::msg::Float64 msg);
+            void CameraFrameRecieved(sensor_msgs::msg::Image msg);
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Private Methods                                                                                       //
@@ -45,8 +44,7 @@ namespace coral_cam{
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Node, Publishers and Subscribers                                                                      //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr imageSubscriber_;
-            rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr centroidSubscriber_;
+            rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscriber_;
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Constants                                                                                             //
@@ -56,13 +54,8 @@ namespace coral_cam{
             // Variables                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            QVBoxLayout* mainLayout_;
-            QHBoxLayout* topLayout_;
-            QHBoxLayout* bottomLayout_;
-            QLabel* batteryLabel_;
-            QLabel* pamLabel_;
-            QLabel* centroidLabel_;
-            QLabel* realsenseCameraFeed_;
+            QVBoxLayout* main_layout_;
+            QLabel* realsense_camera_feed_;
             
     };
 }

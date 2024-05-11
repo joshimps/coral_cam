@@ -1,83 +1,73 @@
-#include <rclcpp/rclcpp.hpp>
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/bool.hpp"
+#include "std_msgs/msg/int64.hpp"
+#include <lgpio.h>
+#include <functional>
+#include <memory>
+#include <chrono> 
+#include <thread>
 
-#include <std_msgs/msg/string.hpp>
-#include <std_msgs/msg/bool.hpp>
-#include <std_msgs/msg/float64.hpp>
-
-#include <sensor_msgs/msg/point_cloud2.hpp>
-
-#include <pcl/PCLPointCloud2.h>
-#include <pcl/impl/point_types.hpp>
-#include <pcl/io/pcd_io.h>
-#include <pcl/common/centroid.h>
-#include <pcl_conversions/pcl_conversions.h>
-
+using namespace std::chrono_literals;
 
 namespace coral_cam{
-    class RealsenseCamera: public rclcpp::Node{
+    class CaptureButton : public rclcpp::Node{
         public:
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Constructors and Destructors                                                                          //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            RealsenseCamera(const rclcpp::NodeOptions & options);
+            CaptureButton(const rclcpp::NodeOptions &options);
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Public Methods                                                                                        //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            /**
-            Saves the current point cloud seen by the Intel Realsense camera
-            */
-            void savePointCloud(std_msgs::msg::Bool msg);
-
-            /**
-            Writes the supplied pcl point cloud to a .pcd file
-            */
-            void writePointCloudtoFile(pcl::PCLPointCloud2 pointcloud);
-
-            /**
-            Returns the current point cloud save in currentPointCloud_;
-            */
-            void readCurrentPointCloud(sensor_msgs::msg::PointCloud2 msg);
-
-
+       
         private:
-
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Callbacks                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
+           
+            /**
+            When the gpio handle is published to gpio_handle_topic this callback checks if the handle is valid and
+            saves it to gpioHandle_ if valid
+            @return int, 0 if valid GPIO handle set, 1 if invalid GPIO handle retrieved
+            */
+            int SetGpioHandle(std_msgs::msg::Int64 msg);
+
+
+            /**
+            Reads whether the pin specified by buttonPinNumber_ is HIGH or LOW and publishes its value to button_pressed_topic
+            */
+            void ReadPin();
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Private Methods                                                                                       //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Node, Publishers and Subscribers                                                                      //
+            // Node,Timers, Publishers and Subscribers                                                                      //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr realsenseSubscriber_;
-            rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr buttonSubscriber_;
+            rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr button_pressed_publisher_;
+            rclcpp::Subscription<std_msgs::msg::Int64>::SharedPtr gpio_handle_subscriber_;
+            rclcpp::Subscription<std_msgs::msg::Int64>::SharedPtr button_pin_subscriber_;
+            rclcpp::TimerBase::SharedPtr timer_;
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Constants                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
+            const int lflags_ = 0;
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Variables                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            std::string path_;
-            int numberOfFiles_;
-            int numberOfFilesToSave_;
-            sensor_msgs::msg::PointCloud2 savedPointCloud_;
-            pcl::PCLPointCloud2 savedPointCloudAsPcl_;
-            pcl::PointXYZ centroidPcl_;
-            sensor_msgs::msg::PointCloud2 currentPointCloud_;
-            int currentButtonValue_;
-            int previousButtonValue_;
+            int gpio_handle_;
+            
+            int capture_button_pin_;
+            int debounce_time_us_;
+
+            bool pin_configured_;
+            bool read_error_;
+           
+
     };  
 }

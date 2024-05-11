@@ -1,5 +1,4 @@
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/bool.hpp"
 #include "std_msgs/msg/int64.hpp"
 #include <lgpio.h>
 #include <functional>
@@ -32,8 +31,7 @@ namespace coral_cam{
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Node,Timers, Publishers and Subscribers                                                                      //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr gpioHandlePublisher_;
-            rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr buttonPinPublisher_;
+            rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr gpio_handle_publisher_;
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Constants                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,12 +39,9 @@ namespace coral_cam{
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Variables                                                                                             //
             //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            int gpioHandle_;
-            int gpioNumber_;
-            int buttonPin_;
+            int gpio_handle_;
+            int gpio_number_;
 
-            std_msgs::msg::Int64 gpioHandleMessage_;
-            std_msgs::msg::Int64 buttonPinMessage_;
 
     };  
 }

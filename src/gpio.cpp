@@ -5,26 +5,18 @@
 //////////////////////////////////////////////////////////
 namespace coral_cam{
 
-    Gpio::Gpio(const rclcpp::NodeOptions &options):Node("button_node",options){
+    Gpio::Gpio(const rclcpp::NodeOptions &options):Node("gpio_node",options){
         
-        this->declare_parameter("gpio_number", -1);
-        this->declare_parameter("button_pin", -1);
+        this->declare_parameter("gpio_number", 0);
 
-        gpioNumber_ = this->get_parameter("gpio_number").as_int();
-        buttonPin_ = this->get_parameter("button_pin").as_int(); 
-        gpioHandle_ = lgGpiochipOpen(gpioNumber_);
+        gpio_number_ = this->get_parameter("gpio_number").as_int();
+        gpio_handle_ = lgGpiochipOpen(gpio_number_);
 
-
-        gpioHandlePublisher_ = this->create_publisher<std_msgs::msg::Int64>("gpio_handle_topic", 10);
-        buttonPinPublisher_ = this->create_publisher<std_msgs::msg::Int64>("button_pin_topic", 10);
-
-        gpioHandleMessage_.data = gpioHandle_;
-        buttonPinMessage_.data = buttonPin_;
-
-        RCLCPP_INFO(this->get_logger(), "NEW HANDLE: %d ",gpioHandle_);
-
-        gpioHandlePublisher_->publish(gpioHandleMessage_);
-        buttonPinPublisher_->publish(buttonPinMessage_);
+        gpio_handle_publisher_ = this->create_publisher<std_msgs::msg::Int64>("gpio_handle_topic", 10);
+        
+        std_msgs::msg::Int64 gpio_handle_message;
+        gpio_handle_message.data = gpio_handle_;
+        gpio_handle_publisher_->publish(gpio_handle_message);
     }
 
 }

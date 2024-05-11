@@ -59,13 +59,13 @@ include_directories(
 
 add_library(helpers SHARED include/helpers.hpp)
 
-add_library(button_component SHARED src/button.cpp)
-rclcpp_components_register_nodes(button_component "coral_cam::Button")
-ament_target_dependencies(button_component rclcpp rclcpp_components std_msgs sensor_msgs)
-target_link_libraries(button_component lgpio)
+add_library(capture_button_component SHARED src/capture_button.cpp)
+rclcpp_components_register_nodes(capture_button_component "coral_cam::CaptureButton")
+ament_target_dependencies(capture_button_component rclcpp rclcpp_components std_msgs sensor_msgs)
+target_link_libraries(capture_button_component lgpio)
 
-add_library(realsense_camera_component SHARED src/realsenseCamera.cpp)
-rclcpp_components_register_nodes(realsense_camera_component "coral_cam::RealsenseCamera")
+add_library(realsense_camera_component SHARED src/real_sense_camera.cpp)
+rclcpp_components_register_nodes(realsense_camera_component "coral_cam::RealSenseCamera")
 ament_target_dependencies(realsense_camera_component rclcpp_components rclcpp std_msgs sensor_msgs pcl_conversions)
 target_link_libraries(realsense_camera_component ${PCL_LIBRARIES} helpers)
 
@@ -74,20 +74,20 @@ rclcpp_components_register_nodes(gpio_component "coral_cam::Gpio")
 ament_target_dependencies(gpio_component rclcpp_components rclcpp std_msgs)
 target_link_libraries(gpio_component lgpio )
 
-add_executable(coral_cam src/coralCam.cpp)
-target_link_libraries(coral_cam realsense_camera_component button_component gpio_component) 
+add_executable(coral_cam src/coral_cam.cpp)
+target_link_libraries(coral_cam realsense_camera_component capture_button_component gpio_component) 
 
 add_executable(gui include/gui.hpp src/gui.cpp)
 ament_target_dependencies(gui rclcpp_components rclcpp sensor_msgs)
 target_link_libraries(gui Qt5::Core Qt5::Quick Qt5::Widgets)
 
-ament_export_targets(export_button_component)
+ament_export_targets(export_capture_button_component)
 ament_export_targets(export_realsense_camera_component)
 ament_export_targets(export_gpio_component)
 ament_export_targets(export_helpers)
 
-install(TARGETS button_component
-        EXPORT export_button_component
+install(TARGETS capture_button_component
+        EXPORT export_capture_button_component
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin

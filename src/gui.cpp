@@ -3,22 +3,22 @@
 namespace coral_cam{
    Gui::Gui(QWidget* parent):QWidget(parent), rclcpp::Node("gui_node"){
         
-        rclcpp::QoS qosSettings(rclcpp::KeepLast(10),rmw_qos_profile_sensor_data);
+        rclcpp::QoS qos_settings(rclcpp::KeepLast(10),rmw_qos_profile_sensor_data);
 
-        imageSubscriber_ = this->create_subscription<sensor_msgs::msg::Image>(
-        "/real_sense/color/image_rect_resized", qosSettings, std::bind(&Gui::cameraFrameRecieved, this, std::placeholders::_1));
+        image_subscriber_ = this->create_subscription<sensor_msgs::msg::Image>(
+        "/real_sense/color/image_rect_resized", qos_settings, std::bind(&Gui::CameraFrameRecieved, this, std::placeholders::_1));
         
 
         this->setFixedSize(1920, 1080);
 
-        mainLayout_ = new QVBoxLayout(this);
+        main_layout_ = new QVBoxLayout(this);
         
         
         // Create and position the Realsense Feed
-        realsenseCameraFeed_ = new QLabel(this);
-        realsenseCameraFeed_->setMinimumSize(960,540);
-        realsenseCameraFeed_->setMaximumSize(960,540);
-        mainLayout_->addWidget(realsenseCameraFeed_, 0 , Qt::AlignHCenter);
+        realsense_camera_feed_ = new QLabel(this);
+        realsense_camera_feed_->setMinimumSize(960,540);
+        realsense_camera_feed_->setMaximumSize(960,540);
+        main_layout_->addWidget(realsense_camera_feed_, 0 , Qt::AlignHCenter);
         
         this->show();
    }
@@ -27,22 +27,17 @@ namespace coral_cam{
 
    }
 
-   void Gui::cameraFrameRecieved(sensor_msgs::msg::Image msg){
+   void Gui::CameraFrameRecieved(sensor_msgs::msg::Image msg){
         QImage::Format format = QImage::Format_RGB888;
-        QPixmap currentRealSenseCameraPixMap = QPixmap::fromImage(QImage(&msg.data[0], msg.width, msg.height, format));
-        realsenseCameraFeed_->setPixmap(currentRealSenseCameraPixMap);
-   }
-
-   void Gui::centroidFrameRecieved(std_msgs::msg::Float64 msg){
-        std::string text = "Centroid Z: " + std::to_string(msg.data);
-        centroidLabel_->setText(QString::fromStdString(text));
+        QPixmap current_real_sense_camera_pix_map = QPixmap::fromImage(QImage(&msg.data[0], msg.width, msg.height, format));
+        realsense_camera_feed_->setPixmap(current_real_sense_camera_pix_map);
    }
 
 }
 
 int main(int argc, char * argv[]){
     QApplication app(argc, argv);
-   rclcpp::init(argc, argv);
+    rclcpp::init(argc, argv);
 
     rclcpp::executors::MultiThreadedExecutor executor;
 

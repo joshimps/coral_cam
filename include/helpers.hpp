@@ -4,7 +4,7 @@
 #include <string>
 #include <ctime>
 
-bool fileExists(const char *filename)
+bool FileExists(const char *filename)
 {
     FILE *fp = fopen(filename, "r");
     bool is_exist = false;
@@ -16,7 +16,7 @@ bool fileExists(const char *filename)
     return is_exist;
 }
 
-std::string getCurrentTime(){
+std::string GetCurrentTime(){
     tm * currentLocalTime;
     time_t currentTime;
     char dateChar[100];
