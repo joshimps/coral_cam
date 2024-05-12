@@ -16,16 +16,17 @@ bool FileExists(const char *filename)
     return is_exist;
 }
 
-std::string GetCurrentTime(){
-    tm * currentLocalTime;
+std::string GetCurrentTime()
+{
+    tm *currentLocalTime;
     time_t currentTime;
     char dateChar[100];
-	char timeChar[100];
+    char timeChar[100];
     time(&currentTime);
-	currentLocalTime = localtime(&currentTime);
-    
+    currentLocalTime = localtime(&currentTime);
+
     strftime(dateChar, 50, "%d%m%y", currentLocalTime);
-	strftime(timeChar, 50, "%H%M%S", currentLocalTime);
+    strftime(timeChar, 50, "%H%M%S", currentLocalTime);
 
     std::string dateString(dateChar);
     std::string timeString(timeChar);

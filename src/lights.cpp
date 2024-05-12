@@ -1,5 +1,5 @@
 #include "lights.hpp"
 
-Lights::Lights():Node("lights_node"){
-    
+Lights::Lights() : Node("lights_node")
+{
 }

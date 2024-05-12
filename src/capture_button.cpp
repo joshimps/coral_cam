@@ -3,10 +3,12 @@
 ///////////////////////////////////////////////////////////
 // Constructors & Destructors
 //////////////////////////////////////////////////////////
-namespace coral_cam{
+namespace coral_cam
+{
 
-    CaptureButton::CaptureButton(const rclcpp::NodeOptions &options):Node("button_node",options){
-        
+    CaptureButton::CaptureButton(const rclcpp::NodeOptions &options) : Node("capture_button_node", options)
+    {
+
         this->declare_parameter("debounce_time_us", 0);
         this->declare_parameter("capture_button_pin", 0);
 
@@ -14,64 +16,71 @@ namespace coral_cam{
         timer_ = this->create_wall_timer(10ms, std::bind(&CaptureButton::ReadPin, this));
 
         gpio_handle_subscriber_ = this->create_subscription<std_msgs::msg::Int64>(
-        "gpio_handle_topic", 10, std::bind(&CaptureButton::SetGpioHandle, this, std::placeholders::_1));
-
+            "gpio_handle_topic", 10, std::bind(&CaptureButton::SetGpioHandle, this, std::placeholders::_1));
 
         pin_configured_ = false;
         read_error_ = false;
         gpio_handle_ = -1;
 
-       debounce_time_us_ = this->get_parameter("debounce_time_us").as_int();
-       capture_button_pin_ = this->get_parameter("capture_button_pin").as_int();
+        debounce_time_us_ = this->get_parameter("debounce_time_us").as_int();
+        capture_button_pin_ = this->get_parameter("capture_button_pin").as_int();
     }
 
-    int CaptureButton::SetGpioHandle(std_msgs::msg::Int64 msg){
+    int CaptureButton::SetGpioHandle(std_msgs::msg::Int64 msg)
+    {
 
-        if(msg.data >= 0){
+        if (msg.data >= 0)
+        {
             gpio_handle_ = msg.data;
             return 0;
         }
-        else{
+        else
+        {
             RCLCPP_ERROR(this->get_logger(), "INVALID GPIO HANDLE: %ld", msg.data);
             return 1;
         }
     }
 
-    void CaptureButton::ReadPin(){
-        
-        if(read_error_)
+    void CaptureButton::ReadPin()
+    {
+
+        if (read_error_)
         {
             return;
         }
-        
+
         int pin_value;
 
-
-        if(pin_configured_ == false && capture_button_pin_ > -1 && gpio_handle_ > -1){
-            lgGpioClaimInput(gpio_handle_,lflags_,capture_button_pin_);
-            lgGpioSetDebounce(gpio_handle_,capture_button_pin_,debounce_time_us_);
-            RCLCPP_INFO(this->get_logger(), "GPIO PIN: %d AT GPIO HANDLE: %d HAS BEEN CONFIGURED WITH DEBOUNCE TIME %d MICROSECONDS",capture_button_pin_,gpio_handle_,debounce_time_us_);
+        if (pin_configured_ == false && capture_button_pin_ > -1 && gpio_handle_ > -1)
+        {
+            lgGpioClaimInput(gpio_handle_, lflags_, capture_button_pin_);
+            lgGpioSetDebounce(gpio_handle_, capture_button_pin_, debounce_time_us_);
+            RCLCPP_INFO(this->get_logger(), "GPIO PIN: %d AT GPIO HANDLE: %d HAS BEEN CONFIGURED WITH DEBOUNCE TIME %d MICROSECONDS", capture_button_pin_, gpio_handle_, debounce_time_us_);
             pin_configured_ = true;
         }
-        else if(capture_button_pin_ < 0 ){
-            RCLCPP_INFO(this->get_logger(), "PIN NUMBER HAS NOT BEEN CONFIGURED CORRECTLY: %d",capture_button_pin_);
+        else if (capture_button_pin_ < 0)
+        {
+            RCLCPP_INFO(this->get_logger(), "PIN NUMBER HAS NOT BEEN CONFIGURED CORRECTLY: %d", capture_button_pin_);
             read_error_ = true;
             return;
         }
-        else if(gpio_handle_ < 0){
+        else if (gpio_handle_ < 0)
+        {
             read_error_ = true;
-            RCLCPP_INFO(this->get_logger(), "GPIO HANDLE HAS NOT BEEN CONFIGURED CORRECTLY: %d",gpio_handle_);
+            RCLCPP_INFO(this->get_logger(), "GPIO HANDLE HAS NOT BEEN CONFIGURED CORRECTLY: %d", gpio_handle_);
             return;
         }
 
         pin_value = lgGpioRead(gpio_handle_, capture_button_pin_);
 
-        if(pin_value == 1 || pin_value == 0){
+        if (pin_value == 1 || pin_value == 0)
+        {
             std_msgs::msg::Bool button_pressed_message;
             button_pressed_message.data = pin_value;
             button_pressed_publisher_->publish(button_pressed_message);
         }
-        else{
+        else
+        {
             RCLCPP_ERROR(this->get_logger(), "BAD PIN READ, CHECK FOR BAD WIRING");
             return;
         }

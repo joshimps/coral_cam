@@ -7,6 +7,8 @@ from launch_ros.actions import Node
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
 from launch.actions import ExecuteProcess
+from rclpy.qos import QoSDurabilityPolicy
+
 
 
 def generate_launch_description():
@@ -22,26 +24,35 @@ def generate_launch_description():
     point_cloud_path = "/home/josh/git/coral_cam/clouds"
     
     #Realsense Camera Settings
-    camera_name = 'D405',
-    camera_namespace = 'real_sense',
-    pointcloud_enable = 'true',
-    pointcloud_ordered_pc = 'true',
-    enable_sync = 'true',
-    clip_distance = '0.8',
-    decimation_filter_enable = 'true',
-    spatial_filter_enable = 'true',
-    hole_filling_filter_enable ='false',
+    camera_name = 'D405'
+    camera_namespace = 'real_sense'
+    pointcloud_enable = 'true'
+    pointcloud_ordered_pc = 'true'
+    enable_sync = 'true'
+    clip_distance = '0.8'
+    decimation_filter_enable = 'true'
+    spatial_filter_enable = 'true'
+    hole_filling_filter_enable ='false'
+    
+    #Image Processing Settings
+    
+    desired_width =960
+    desired_height = 540
+    input_image = '/' + camera_namespace + '/color/image_rect_raw'
+    input_info = '/' + camera_namespace + '/color/camera_info'
+    output_image = '/' + camera_namespace + '/color/image_rect_resized'
+    output_info = '/' + camera_namespace + '/color/camera_info_resized'
     
     return LaunchDescription([
         ComposableNodeContainer(
                 name='coral_cam_container',
                 namespace='coral_cam',
                 package='rclcpp_components',
-                executable='component_container',
+                executable='component_container_mt',
                 composable_node_descriptions=[
                     ComposableNode(
                         package='coral_cam',
-                        plugin='coral_cam::captureButton',
+                        plugin='coral_cam::CaptureButton',
                         name='capture_button_node',
                         namespace='coral_cam',
                         extra_arguments=[{'use_intra_process_comms': True}],
@@ -49,8 +60,8 @@ def generate_launch_description():
                     ),
                     ComposableNode(
                         package='coral_cam',
-                        plugin='coral_cam::RealsenseCamera',
-                        name='realsense_camera_node',
+                        plugin='coral_cam::RealSenseCamera',
+                        name='real_sense_camera_node',
                         namespace='coral_cam',
                         parameters = [{"point_cloud_path":point_cloud_path,
                                        "number_of_captures":number_of_captures}],
@@ -69,15 +80,17 @@ def generate_launch_description():
                         plugin='image_proc::ResizeNode',
                         name='resize_node',
                         remappings=[
-                            ('image/image_raw', '/' + camera_namespace + '/color/image_rect_raw'),
-                            ('/image/camera_info','/' + camera_namespace + '/color/camera_info'),
-                            ('/resize/image_raw','/' + camera_namespace + '/color/image_rect_resized'),
-                            ('/resize/camera_info','/' + camera_namespace + '/real_sense/color/camera_info_resized')
+                            ('/image/image_raw', input_image),
+                            ('/image/camera_info', input_info),
+                            ('/resize/image_raw',output_image),
+                            ('/resize/camera_info',output_info)
                         ],
                         parameters=[{
                             'use_scale':False,
-                            'width': 960,
-                            'height': 540,
+                            'width': desired_width,
+                            'height': desired_height,
+                            'qos_overrides./parameter_events.publisher.durability':'volatile',
+
                         }]
             )
                 ],

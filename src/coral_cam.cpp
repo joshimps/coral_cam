@@ -6,7 +6,8 @@
 #include "real_sense_camera.hpp"
 #include "gpio.hpp"
 
-int main(int argc, char * argv[]){
+int main(int argc, char *argv[])
+{
     rclcpp::init(argc, argv);
 
     rclcpp::executors::MultiThreadedExecutor executor;
@@ -29,12 +30,7 @@ int main(int argc, char * argv[]){
         executor.spin_some();
     }
 
-    executor.remove_node(capture_button);
-    executor.remove_node(real_sense_camera);
-    executor.remove_node(gpio);
-
     rclcpp::shutdown();
 
     return 1;
-    
 }
