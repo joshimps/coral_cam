@@ -6,8 +6,8 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
-from launch.actions import ExecuteProcess
-from rclpy.qos import QoSDurabilityPolicy
+from launch.actions import TimerAction
+
 
 
 
@@ -36,7 +36,7 @@ def generate_launch_description():
     
     #Image Processing Settings
     
-    desired_width =960
+    desired_width = 960
     desired_height = 540
     input_image = '/' + camera_namespace + '/color/image_rect_raw'
     input_info = '/' + camera_namespace + '/color/camera_info'
@@ -44,6 +44,12 @@ def generate_launch_description():
     output_info = '/' + camera_namespace + '/color/camera_info_resized'
     
     return LaunchDescription([
+        Node(
+            package='coral_cam',
+            namespace='coral_cam',
+            executable='gui',
+            name='gui_node'
+        ),
         ComposableNodeContainer(
                 name='coral_cam_container',
                 namespace='coral_cam',
@@ -92,31 +98,34 @@ def generate_launch_description():
                             'qos_overrides./parameter_events.publisher.durability':'volatile',
 
                         }]
-            )
+                    ),
                 ],
                 output='screen',
         ),
-        Node(
-            package='coral_cam',
-            namespace='coral_cam',
-            executable='gui',
-            name='gui_node'
-        ),
-        IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-         get_package_share_directory('coral_cam'), 'launch'),
-         '/realsense_camera_launch.py']),
-        launch_arguments={'camera_name': camera_name,
-                          'camera_namespace':camera_namespace,
-                          'pointcloud.enable': pointcloud_enable,
-                          'pointcloud.ordered_pc':pointcloud_ordered_pc,
-                          'enable_sync':enable_sync,
-                          'clip_distance' : clip_distance,
-                          'decimation_filter.enable':decimation_filter_enable,
-                          'spatial_filter.enable':spatial_filter_enable,
-                          'hole_filling_filter.enable':hole_filling_filter_enable,
-                         }.items()
-        )
         
+        #This is really bad, using a timer to delay a node startup is shoddy design. However...
+        #using this was the only way I found to get around a bug where image_proc remppings wouldn't
+        #apply if the realsense topics existed before image_proc was done loading.
+        
+        TimerAction(
+            period = 5.0,
+            actions = [
+                 IncludeLaunchDescription(
+                    PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('coral_cam'), 'launch'),
+                    '/realsense_camera_launch.py']),
+                    launch_arguments={'camera_name': camera_name,
+                                    'camera_namespace':camera_namespace,
+                                    'pointcloud.enable': pointcloud_enable,
+                                    'pointcloud.ordered_pc':pointcloud_ordered_pc,
+                                    'enable_sync':enable_sync,
+                                    'clip_distance' : clip_distance,
+                                    'decimation_filter.enable':decimation_filter_enable,
+                                    'spatial_filter.enable':spatial_filter_enable,
+                                    'hole_filling_filter.enable':hole_filling_filter_enable,
+                                    }.items()
+                    ),
+                ]
+        )
     ])
 
