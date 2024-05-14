@@ -15,6 +15,10 @@ namespace coral_cam
         real_sense_subscriber_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
             "/real_sense/depth/color/points", 10, std::bind(&RealSenseCamera::ReadCurrentPointCloud, this, std::placeholders::_1));
 
+        depth_image_subscriber_ = this->create_subscription<sensor_msgs::msg::Image>(
+            "/real_sense/color/image_rect_raw", 10, std::bind(&RealSenseCamera::CalculateCurrentCentreDepth, this, std::placeholders::_1));
+
+
         current_capture_button_value_ = 0;
         previous_capture_button_value_ = 0;
 
@@ -23,11 +27,11 @@ namespace coral_cam
         number_of_files_to_save_ = 0;
     }
 
-    void RealSenseCamera::SavePointCloud(std_msgs::msg::Bool msg)
+    void RealSenseCamera::SavePointCloud(std_msgs::msg::Bool::SharedPtr msg)
     {
 
         previous_capture_button_value_ = current_capture_button_value_;
-        current_capture_button_value_ = msg.data;
+        current_capture_button_value_ = msg->data;
 
         // If the capture button has been released (i.e falling edge 1 -> 0) we save the number of point clouds specified in the number_of_captures parameter tp pcd files
 
@@ -38,9 +42,9 @@ namespace coral_cam
         }
     }
 
-    void RealSenseCamera::ReadCurrentPointCloud(sensor_msgs::msg::PointCloud2 msg)
+    void RealSenseCamera::ReadCurrentPointCloud(sensor_msgs::msg::PointCloud2::SharedPtr msg)
     {
-        current_point_cloud_ = msg;
+        current_point_cloud_ = *msg;
         pcl_conversions::toPCL(current_point_cloud_, saved_point_cloud_as_pcl_);
 
         if (number_of_files_to_save_ > 0)
@@ -70,6 +74,11 @@ namespace coral_cam
 
         pcl::io::savePCDFile(path_, point_cloud, zero, identity, true);
     }
+
+    void RealSenseCamera::CalculateCurrentCentreDepth(sensor_msgs::msg::Image::SharedPtr msg){
+        
+    }
+
 
 }
 

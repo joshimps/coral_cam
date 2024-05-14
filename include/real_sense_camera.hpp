@@ -5,12 +5,16 @@
 #include <std_msgs/msg/float64.hpp>
 
 #include <sensor_msgs/msg/point_cloud2.hpp>
+#include <sensor_msgs/msg/image.hpp>
 
 #include <pcl/PCLPointCloud2.h>
 #include <pcl/impl/point_types.hpp>
 #include <pcl/io/pcd_io.h>
 #include <pcl/common/centroid.h>
 #include <pcl_conversions/pcl_conversions.h>
+
+#include <cv_bridge/cv_bridge.h>
+
 
 namespace coral_cam
 {
@@ -28,24 +32,28 @@ namespace coral_cam
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /**
-        Saves the current point cloud seen by the Intel Realsense camera
-        */
-        void SavePointCloud(std_msgs::msg::Bool msg);
-
-        /**
         Writes the supplied pcl point cloud to a .pcd file
         */
         void WritePointCloudtoFile(pcl::PCLPointCloud2 pointcloud);
 
-        /**
-        Returns the current point cloud save in currentPointCloud_;
-        */
-        void ReadCurrentPointCloud(sensor_msgs::msg::PointCloud2 msg);
 
     private:
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Callbacks                                                                                             //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /**
+        Saves the current point cloud seen by the Intel Realsense camera if the capture button is pressed
+        */
+        void SavePointCloud(std_msgs::msg::Bool::SharedPtr msg);
+
+        /**
+        Returns the current point cloud save in currentPointCloud_;
+        */
+        void ReadCurrentPointCloud(sensor_msgs::msg::PointCloud2::SharedPtr msg);
+
+
+        void CalculateCurrentCentreDepth(sensor_msgs::msg::Image::SharedPtr msg);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Private Methods                                                                                       //
@@ -56,6 +64,7 @@ namespace coral_cam
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr real_sense_subscriber_;
         rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr capture_button_subscriber_;
+        rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr depth_image_subscriber_;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Constants                                                                                             //
@@ -70,6 +79,9 @@ namespace coral_cam
 
         sensor_msgs::msg::PointCloud2 current_point_cloud_;
         pcl::PCLPointCloud2 saved_point_cloud_as_pcl_;
+
+        cv_bridge::CvImagePtr cv_image_;
+        int pixels_[2];
 
         int current_capture_button_value_;
         int previous_capture_button_value_;

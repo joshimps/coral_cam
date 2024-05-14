@@ -8,8 +8,12 @@
 #include <QPushButton>
 #include <QImage>
 #include <QLabel>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
+#include <QSizePolicy>
+
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QTabWidget>
+
 #include <QPixmap>
 #include <QString>
 
@@ -18,7 +22,7 @@
 
 namespace coral_cam
 {
-    class Gui : public QWidget, public rclcpp::Node
+    class Gui : public QTabWidget, public rclcpp::Node
     {
         Q_OBJECT
     public:
@@ -26,7 +30,7 @@ namespace coral_cam
         // Constructors and Destructors                                                                          //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        Gui(QWidget *parent);
+        Gui(QTabWidget *parent);
         ~Gui();
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Public Methods                                                                                        //
@@ -55,7 +59,25 @@ namespace coral_cam
         // Variables                                                                                             //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        QVBoxLayout *main_layout_;
-        QLabel *realsense_camera_feed_;
+        QTabWidget *main_layout_;
+
+        QWidget *pam_tab_;
+        QGridLayout *pam_tab_grid_layout_;
+
+        QHBoxLayout * pam_header_bar_;
+        QLabel *current_temp_;
+        QLabel *current_battery_;
+
+        QLabel *camera_feed_;
+
+        QHBoxLayout * pam_footer_bar_;
+        QLabel *depth_to_center_;
+
+
+        QWidget *settings_tab_;
+        QGridLayout *settings_tab_grid_layout_;
+
+
+        
     };
 }

@@ -2,23 +2,68 @@
 
 namespace coral_cam
 {
-    Gui::Gui(QWidget *parent) : QWidget(parent), rclcpp::Node("gui_node")
+    Gui::Gui(QTabWidget *parent) : QTabWidget(parent), rclcpp::Node("gui_node")
     {
 
         rclcpp::QoS qos_settings(rclcpp::KeepLast(10), rmw_qos_profile_sensor_data);
-
         image_subscriber_ = this->create_subscription<sensor_msgs::msg::Image>(
             "/real_sense/color/image_rect_resized", qos_settings, std::bind(&Gui::CameraFrameRecieved, this, std::placeholders::_1));
 
-        this->setFixedSize(1920, 1080);
+        this->setFixedSize(800, 480);
 
-        main_layout_ = new QVBoxLayout(this);
+        // Create the first tab where our pam display will go
+        QSizePolicy expandingSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+        //Create a tab for the pam display to go
+        pam_tab_ = new QWidget();
+        this->addTab(pam_tab_, QString("PAM"));
+        pam_tab_->setSizePolicy(expandingSizePolicy);
+
+        pam_tab_grid_layout_ = new QGridLayout(pam_tab_);
+        pam_tab_grid_layout_->setRowStretch(0,12.5);
+        pam_tab_grid_layout_->setRowStretch(1,75);
+        pam_tab_grid_layout_->setRowStretch(2,12.5);
+
+        pam_tab_grid_layout_->setColumnStretch(0,1);
+        pam_tab_grid_layout_->setColumnStretch(1,1);
+        pam_tab_grid_layout_->setColumnStretch(2,1);
+
+        //Create and position the header display
+        
+        pam_header_bar_ = new QHBoxLayout();
+        pam_header_bar_->setStretch(0,50);
+        pam_header_bar_->setStretch(1,50);
+        pam_tab_grid_layout_->addLayout(pam_header_bar_,0,0);
+
+        current_temp_ = new QLabel();
+        current_temp_->setText("Current Temperature: ");
+        current_temp_->setAlignment(Qt::AlignLeft);
+        pam_header_bar_->addWidget(current_temp_);
+
+        current_battery_ = new QLabel();
+        current_battery_->setText("Current Battery:    ");
+        pam_header_bar_->addWidget(current_battery_);
+        current_battery_->setAlignment(Qt::AlignRight);
 
         // Create and position the Realsense Feed
-        realsense_camera_feed_ = new QLabel(this);
-        realsense_camera_feed_->setMinimumSize(960, 540);
-        realsense_camera_feed_->setMaximumSize(960, 540);
-        main_layout_->addWidget(realsense_camera_feed_, 0, Qt::AlignHCenter);
+        camera_feed_ = new QLabel();
+        camera_feed_->setSizePolicy(expandingSizePolicy);
+        pam_tab_grid_layout_->addWidget(camera_feed_,1,0);
+
+        //Create and position the footer display
+        pam_footer_bar_ = new QHBoxLayout();
+        pam_tab_grid_layout_->addLayout(pam_footer_bar_,2,0);
+
+        depth_to_center_ = new QLabel();
+        depth_to_center_->setText("Depth To Center: ");
+        depth_to_center_->setAlignment(Qt::AlignLeft);
+        pam_footer_bar_->addWidget(depth_to_center_);
+
+        // Create a tab for our settings to go 
+        settings_tab_ = new QWidget();
+        this->addTab(settings_tab_, QString("Settings"));
+        settings_tab_grid_layout_ = new QGridLayout(settings_tab_);
+
 
         this->show();
     }
@@ -31,7 +76,7 @@ namespace coral_cam
     {
         QImage::Format format = QImage::Format_RGB888;
         QPixmap current_real_sense_camera_pix_map = QPixmap::fromImage(QImage(&msg.data[0], msg.width, msg.height, format));
-        realsense_camera_feed_->setPixmap(current_real_sense_camera_pix_map);
+        camera_feed_->setPixmap(current_real_sense_camera_pix_map);
     }
 
 }
@@ -43,7 +88,7 @@ int main(int argc, char *argv[])
 
     rclcpp::executors::MultiThreadedExecutor executor;
 
-    QWidget *parent = 0;
+    QTabWidget *parent = 0;
     auto gui = std::make_shared<coral_cam::Gui>(parent);
     executor.add_node(gui);
 

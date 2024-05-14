@@ -36,8 +36,8 @@ def generate_launch_description():
     
     #Image Processing Settings
     
-    desired_width = 960
-    desired_height = 540
+    desired_width = 800
+    desired_height = 360
     input_image = '/' + camera_namespace + '/color/image_rect_raw'
     input_info = '/' + camera_namespace + '/color/camera_info'
     output_image = '/' + camera_namespace + '/color/image_rect_resized'
