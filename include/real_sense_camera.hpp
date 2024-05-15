@@ -13,8 +13,6 @@
 #include <pcl/common/centroid.h>
 #include <pcl_conversions/pcl_conversions.h>
 
-#include <cv_bridge/cv_bridge.h>
-
 
 namespace coral_cam
 {
