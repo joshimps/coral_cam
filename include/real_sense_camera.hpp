@@ -78,7 +78,6 @@ namespace coral_cam
         sensor_msgs::msg::PointCloud2 current_point_cloud_;
         pcl::PCLPointCloud2 saved_point_cloud_as_pcl_;
 
-        cv_bridge::CvImagePtr cv_image_;
         int pixels_[2];
 
         int current_capture_button_value_;
