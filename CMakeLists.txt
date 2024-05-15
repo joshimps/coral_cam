@@ -57,7 +57,16 @@ include_directories(
         include
 )
 
+
 add_library(helpers SHARED include/helpers.hpp)
+
+add_library(battery_component SHARED src/battery.cpp)
+rclcpp_components_register_nodes(battery_component "coral_cam::Battery")
+ament_target_dependencies(battery_component rclcpp rclcpp_components std_msgs)
+
+add_library(temperature_sensor_component SHARED src/temperature_sensor.cpp)
+rclcpp_components_register_nodes(temperature_sensor_component "coral_cam::TemperatureSensor")
+ament_target_dependencies(temperature_sensor_component rclcpp rclcpp_components std_msgs)
 
 add_library(capture_button_component SHARED src/capture_button.cpp)
 rclcpp_components_register_nodes(capture_button_component "coral_cam::CaptureButton")
@@ -75,15 +84,17 @@ ament_target_dependencies(gpio_component rclcpp_components rclcpp std_msgs)
 target_link_libraries(gpio_component lgpio )
 
 add_executable(coral_cam src/coral_cam.cpp)
-target_link_libraries(coral_cam realsense_camera_component capture_button_component gpio_component) 
+target_link_libraries(coral_cam battery_component capture_button_component gpio_component realsense_camera_component) 
 
 add_executable(gui include/gui.hpp src/gui.cpp)
 ament_target_dependencies(gui rclcpp_components rclcpp sensor_msgs)
 target_link_libraries(gui Qt5::Core Qt5::Quick Qt5::Widgets)
 
+ament_export_targets(export_battery_component)
 ament_export_targets(export_capture_button_component)
 ament_export_targets(export_realsense_camera_component)
 ament_export_targets(export_gpio_component)
+ament_export_targets(export_temperature_sensor_component)
 ament_export_targets(export_helpers)
 
 install(TARGETS capture_button_component
@@ -106,6 +117,20 @@ install(TARGETS gpio_component
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin
 )
+install(TARGETS battery_component
+        EXPORT export_battery_component
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
+)
+
+install(TARGETS temperature_sensor_component
+        EXPORT export_temperature_sensor_component
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
+)
+
 
 install(TARGETS helpers
         EXPORT export_helpers
