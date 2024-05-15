@@ -11,6 +11,23 @@ from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument
 
 
+#GPIO Variables
+gpio_number = 5
+capture_button_pin_ = 27
+debounce_time_us = 10000
+
+#System Settings
+number_of_captures = 10
+point_cloud_path = "/home/josh/git/coral_cam/clouds"
+
+#Image Processing Settings
+desired_width = 800
+desired_height = 360
+input_image = '/real_sense/color/image_rect_raw'
+input_info = '/real_sense/color/camera_info'
+output_image = '/real_sense/color/image_rect_resized'
+output_info = '/real_sense/color/camera_info_resized'
+
 real_sense_node_params = [ {'name': 'camera_name',                  'default': 'D405', 'description': 'camera unique name'},
                            {'name': 'camera_namespace',             'default': 'real_sense', 'description': 'namespace for camera'},
                            {'name': 'serial_no',                    'default': "''", 'description': 'choose device by serial number'},
@@ -21,7 +38,7 @@ real_sense_node_params = [ {'name': 'camera_name',                  'default': '
                            {'name': 'initial_reset',                'default': 'false', 'description': "''"},
                            {'name': 'accelerate_gpu_with_glsl',     'default': "false", 'description': 'enable GPU acceleration with GLSL'},
                            {'name': 'rosbag_filename',              'default': "''", 'description': 'A realsense bagfile to run from as a device'},
-                           {'name': 'log_level',                    'default': 'info', 'description': 'debug log level [DEBUG|INFO|WARN|ERROR|FATAL]'},
+                           {'name': 'log_level',                    'default': 'debug', 'description': 'debug log level [DEBUG|INFO|WARN|ERROR|FATAL]'},
                            {'name': 'output',                       'default': 'screen', 'description': 'pipe node output [screen|log]'},
                            {'name': 'enable_color',                 'default': 'true', 'description': 'enable color stream'},
                            {'name': 'rgb_camera.color_profile',     'default': '0,0,0', 'description': 'color stream profile'},
@@ -31,6 +48,7 @@ real_sense_node_params = [ {'name': 'camera_name',                  'default': '
                            {'name': 'enable_infra',                 'default': 'false', 'description': 'enable infra0 stream'},
                            {'name': 'enable_infra1',                'default': 'true', 'description': 'enable infra1 stream'},
                            {'name': 'enable_infra2',                'default': 'true', 'description': 'enable infra2 stream'},
+                           {'name': 'depth_module.color_profile',   'default': '0,0,0', 'description': 'Depth module color stream profile'},
                            {'name': 'depth_module.depth_profile',   'default': '0,0,0', 'description': 'depth stream profile'},
                            {'name': 'depth_module.depth_format',    'default': 'Z16', 'description': 'depth stream format'},
                            {'name': 'depth_module.infra_profile',   'default': '0,0,0', 'description': 'infra streams (0/1/2) profile'},
@@ -89,36 +107,6 @@ def set_configurable_parameters(parameters):
     return dict([(param['name'], LaunchConfiguration(param['name'])) for param in parameters])
 
 def generate_launch_description():
-    
-    #GPIO Variables
-    
-    gpio_number = 5
-    capture_button_pin_ = 27
-    debounce_time_us = 10000
-    
-    #System Settings
-    number_of_captures = 10
-    point_cloud_path = "/home/josh/git/coral_cam/clouds"
-    
-    #Realsense Camera Settings
-    pointcloud_enable = 'true'
-    pointcloud_ordered_pc = 'true'
-    enable_sync = 'true'
-    clip_distance = '0.8'
-    decimation_filter_enable = 'true'
-    spatial_filter_enable = 'true'
-    hole_filling_filter_enable ='false'
-    
-    #Image Processing Settings
-    
-    desired_width = 800
-    desired_height = 360
-    input_image = '/real_sense/color/image_rect_raw'
-    input_info = '/real_sense/color/camera_info'
-    output_image = '/real_sense/color/image_rect_resized'
-    output_info = '/real_sense/color/camera_info_resized'
-    
-    
     
     return LaunchDescription(
         declare_configurable_parameters(real_sense_node_params)+
