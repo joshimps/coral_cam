@@ -123,6 +123,10 @@ def generate_launch_description():
                                     'decimation_filter.enable':decimation_filter_enable,
                                     'spatial_filter.enable':spatial_filter_enable,
                                     'hole_filling_filter.enable':hole_filling_filter_enable,
+                                    'enable_infra':'true',
+                                    'enable_infra1':'true',
+                                    'enable_infra2':'true',
+                                    
                                     }.items()
                     ),
                 ]
