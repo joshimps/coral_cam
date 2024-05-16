@@ -60,14 +60,14 @@ namespace coral_cam
         }
         else if (capture_button_pin_ < 0)
         {
-            RCLCPP_INFO(this->get_logger(), "PIN NUMBER HAS NOT BEEN CONFIGURED CORRECTLY: %d", capture_button_pin_);
+            RCLCPP_ERROR(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD PIN NUMBER: %d", capture_button_pin_);
             read_error_ = true;
             return;
         }
         else if (gpio_handle_ < 0)
         {
             read_error_ = true;
-            RCLCPP_INFO(this->get_logger(), "GPIO HANDLE HAS NOT BEEN CONFIGURED CORRECTLY: %d", gpio_handle_);
+            RCLCPP_ERROR(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD GPIO HANDLE: %d", gpio_handle_);
             return;
         }
 
