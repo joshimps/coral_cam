@@ -31,9 +31,8 @@ namespace coral_cam
         /**
         When the gpio handle is published to gpio_handle_topic this callback checks if the handle is valid and
         saves it to gpioHandle_ if valid
-        @return int, 0 if valid GPIO handle set, 1 if invalid GPIO handle retrieved
         */
-        int SetGpioHandle(std_msgs::msg::Int64 msg);
+        void SetGpioHandle(std_msgs::msg::Int64 msg);
 
         /**
         Reads whether the pin specified by buttonPinNumber_ is HIGH or LOW and publishes its value to button_pressed_topic

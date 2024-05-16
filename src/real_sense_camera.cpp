@@ -15,8 +15,8 @@ namespace coral_cam
         real_sense_subscriber_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
             "/real_sense/depth/color/points", 10, std::bind(&RealSenseCamera::ReadCurrentPointCloud, this, std::placeholders::_1));
 
-        depth_image_subscriber_ = this->create_subscription<sensor_msgs::msg::Image>(
-            "/real_sense/color/image_rect_raw", 10, std::bind(&RealSenseCamera::CalculateCurrentCentreDepth, this, std::placeholders::_1));
+        //depth_image_subscriber_ = this->create_subscription<sensor_msgs::msg::Image>(
+        //    "/real_sense/color/image_rect_raw", 10, std::bind(&RealSenseCamera::CalculateCurrentCentreDepth, this, std::placeholders::_1));
 
 
         current_capture_button_value_ = 0;
@@ -37,7 +37,7 @@ namespace coral_cam
 
         if (current_capture_button_value_ == 0 && previous_capture_button_value_ == 1)
         {
-
+            RCLCPP_INFO(this->get_logger(), "STARTING CAPTURE");
             number_of_files_to_save_ = this->get_parameter("number_of_captures").as_int();
         }
     }
@@ -62,10 +62,8 @@ namespace coral_cam
 
         if (FileExists(path_char))
         {
-            RCLCPP_INFO(this->get_logger(), "FILE EXISTS");
             number_of_files_++;
             path_ = this->get_parameter("point_cloud_path").as_string() + "/pcd_file_" + GetCurrentTime() + "_" + std::to_string(number_of_files_) + ".pcd";
-            RCLCPP_INFO(this->get_logger(), "NEW PATH: %s ", path_.c_str());
         }
         else
         {
@@ -75,9 +73,9 @@ namespace coral_cam
         pcl::io::savePCDFile(path_, point_cloud, zero, identity, true);
     }
 
-    void RealSenseCamera::CalculateCurrentCentreDepth(sensor_msgs::msg::Image::SharedPtr msg){
-        
-    }
+    //void RealSenseCamera::CalculateCurrentCentreDepth(sensor_msgs::msg::Image::SharedPtr msg){
+    //    
+    //}
 
 
 }

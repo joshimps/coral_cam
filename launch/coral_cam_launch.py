@@ -83,10 +83,10 @@ real_sense_node_params = [ {'name': 'camera_name',                  'default': '
                            {'name': 'diagnostics_period',           'default': '0.0', 'description': 'Rate of publishing diagnostics. 0=Disabled'},
                            {'name': 'publish_tf',                   'default': 'true', 'description': '[bool] enable/disable publishing static & dynamic TF'},
                            {'name': 'tf_publish_rate',              'default': '0.0', 'description': '[double] rate in Hz for publishing dynamic TF'},
-                           {'name': 'pointcloud.enable',            'default': 'false', 'description': ''},
+                           {'name': 'pointcloud.enable',            'default': 'true', 'description': ''},
                            {'name': 'pointcloud.stream_filter',     'default': '2', 'description': 'texture stream for pointcloud'},
                            {'name': 'pointcloud.stream_index_filter','default': '0', 'description': 'texture stream index for pointcloud'},
-                           {'name': 'pointcloud.ordered_pc',        'default': 'false', 'description': ''},
+                           {'name': 'pointcloud.ordered_pc',        'default': 'true', 'description': ''},
                            {'name': 'pointcloud.allow_no_texture_points', 'default': 'false', 'description': "''"},
                            {'name': 'align_depth.enable',           'default': 'false', 'description': 'enable align depth filter'},
                            {'name': 'colorizer.enable',             'default': 'false', 'description': 'enable colorizer filter'},
@@ -125,14 +125,6 @@ def generate_launch_description():
                 composable_node_descriptions=[
                      ComposableNode(
                         package='coral_cam',
-                        plugin='coral_cam::Gpio',
-                        name='gpio_node',
-                        namespace='coral_cam',
-                        extra_arguments=[{'use_intra_process_comms': True}],
-                        parameters = [{"gpio_number": gpio_number},],
-                    ),
-                     ComposableNode(
-                        package='coral_cam',
                         plugin='coral_cam::Battery',
                         name='battery_node',
                         namespace='coral_cam',
@@ -146,6 +138,14 @@ def generate_launch_description():
                         extra_arguments=[{'use_intra_process_comms': True}],
                         parameters = [{"debounce_time_us":debounce_time_us,
                                        "capture_button_pin": capture_button_pin}],
+                    ),
+                    ComposableNode(
+                        package='coral_cam',
+                        plugin='coral_cam::Gpio',
+                        name='gpio_node',
+                        namespace='coral_cam',
+                        extra_arguments=[{'use_intra_process_comms': True}],
+                        parameters = [{"gpio_number": gpio_number},],
                     ),
                     ComposableNode(
                         package='coral_cam',

@@ -51,7 +51,7 @@ namespace coral_cam
         void ReadCurrentPointCloud(sensor_msgs::msg::PointCloud2::SharedPtr msg);
 
 
-        void CalculateCurrentCentreDepth(sensor_msgs::msg::Image::SharedPtr msg);
+        //void CalculateCurrentCentreDepth(sensor_msgs::msg::Image::SharedPtr msg);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Private Methods                                                                                       //

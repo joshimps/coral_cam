@@ -10,8 +10,9 @@ namespace coral_cam
     {
 
         this->declare_parameter("debounce_time_us", 0);
-        this->declare_parameter("capture_button_pin", 0);
+        this->declare_parameter("capture_button_pin", -1);
 
+        gpio_handle_ = -1;
         pin_configured_ = false;
         read_error_ = false;
 
@@ -25,28 +26,14 @@ namespace coral_cam
             "gpio_handle_topic", 10, std::bind(&CaptureButton::SetGpioHandle, this, std::placeholders::_1));
     }
 
-    int CaptureButton::SetGpioHandle(std_msgs::msg::Int64 msg)
+    void CaptureButton::SetGpioHandle(std_msgs::msg::Int64 msg)
     {
-        RCLCPP_ERROR(this->get_logger(), "HERE: %ld", msg.data);
-        if (msg.data >= 0)
-        {
-            gpio_handle_ = msg.data;
-            return 0;
-        }
-        else
-        {
-            RCLCPP_ERROR(this->get_logger(), "INVALID GPIO HANDLE: %ld", msg.data);
-            return 1;
-        }
+        gpio_handle_ = msg.data;
+
     }
 
     void CaptureButton::ReadPin()
     {
-
-        if (read_error_)
-        {
-            return;
-        }
 
         int pin_value;
 
@@ -59,14 +46,20 @@ namespace coral_cam
         }
         else if (capture_button_pin_ < 0)
         {
-            RCLCPP_ERROR(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD PIN NUMBER: %d", capture_button_pin_);
-            read_error_ = true;
+            if (!read_error_)
+            {
+                RCLCPP_ERROR(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD PIN NUMBER: %d", capture_button_pin_);
+                read_error_ = true;
+            }
             return;
         }
         else if (gpio_handle_ < 0)
         {
-            read_error_ = true;
-            RCLCPP_ERROR(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD GPIO HANDLE: %d", gpio_handle_);
+            if (!read_error_)
+            {
+               RCLCPP_ERROR(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD GPIO HANDLE: %d", gpio_handle_);
+               read_error_ = true;
+            }
             return;
         }
 
@@ -81,7 +74,6 @@ namespace coral_cam
         else
         {
             RCLCPP_ERROR(this->get_logger(), "BAD PIN READ, CHECK FOR BAD WIRING");
-            return;
         }
     }
 
