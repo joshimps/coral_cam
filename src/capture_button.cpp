@@ -12,23 +12,22 @@ namespace coral_cam
         this->declare_parameter("debounce_time_us", 0);
         this->declare_parameter("capture_button_pin", 0);
 
+        pin_configured_ = false;
+        read_error_ = false;
+
+        debounce_time_us_ = this->get_parameter("debounce_time_us").as_int();
+        capture_button_pin_ = this->get_parameter("capture_button_pin").as_int();
+
         button_pressed_publisher_ = this->create_publisher<std_msgs::msg::Bool>("pin_value", 10);
         timer_ = this->create_wall_timer(10ms, std::bind(&CaptureButton::ReadPin, this));
 
         gpio_handle_subscriber_ = this->create_subscription<std_msgs::msg::Int64>(
             "gpio_handle_topic", 10, std::bind(&CaptureButton::SetGpioHandle, this, std::placeholders::_1));
-
-        pin_configured_ = false;
-        read_error_ = false;
-        gpio_handle_ = -1;
-
-        debounce_time_us_ = this->get_parameter("debounce_time_us").as_int();
-        capture_button_pin_ = this->get_parameter("capture_button_pin").as_int();
     }
 
     int CaptureButton::SetGpioHandle(std_msgs::msg::Int64 msg)
     {
-
+        RCLCPP_ERROR(this->get_logger(), "HERE: %ld", msg.data);
         if (msg.data >= 0)
         {
             gpio_handle_ = msg.data;

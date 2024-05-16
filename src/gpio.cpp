@@ -14,7 +14,7 @@ namespace coral_cam
         gpio_number_ = this->get_parameter("gpio_number").as_int();
         gpio_handle_ = lgGpiochipOpen(gpio_number_);
 
-        if (gpio_handle_ <= 0)
+        if (gpio_handle_ <0)
         {
             RCLCPP_ERROR(this->get_logger(), "INVALID GPIO HANDLE CREATED: %d", gpio_handle_);
         }

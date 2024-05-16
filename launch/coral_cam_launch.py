@@ -13,7 +13,7 @@ from launch.actions import DeclareLaunchArgument
 
 #GPIO Variables
 gpio_number = 5
-capture_button_pin_ = 27
+capture_button_pin = 27
 debounce_time_us = 10000
 
 #System Settings
@@ -125,6 +125,14 @@ def generate_launch_description():
                 composable_node_descriptions=[
                      ComposableNode(
                         package='coral_cam',
+                        plugin='coral_cam::Gpio',
+                        name='gpio_node',
+                        namespace='coral_cam',
+                        extra_arguments=[{'use_intra_process_comms': True}],
+                        parameters = [{"gpio_number": gpio_number},],
+                    ),
+                     ComposableNode(
+                        package='coral_cam',
                         plugin='coral_cam::Battery',
                         name='battery_node',
                         namespace='coral_cam',
@@ -136,7 +144,8 @@ def generate_launch_description():
                         name='capture_button_node',
                         namespace='coral_cam',
                         extra_arguments=[{'use_intra_process_comms': True}],
-                        parameters = [{"debounce_time_us":debounce_time_us}],
+                        parameters = [{"debounce_time_us":debounce_time_us,
+                                       "capture_button_pin": capture_button_pin}],
                     ),
                     ComposableNode(
                         package='coral_cam',
@@ -146,14 +155,6 @@ def generate_launch_description():
                         parameters = [{"point_cloud_path":point_cloud_path,
                                        "number_of_captures":number_of_captures}],
                         extra_arguments=[{'use_intra_process_comms': True}],
-                    ),
-                    ComposableNode(
-                        package='coral_cam',
-                        plugin='coral_cam::Gpio',
-                        name='gpio_node',
-                        namespace='coral_cam',
-                        extra_arguments=[{'use_intra_process_comms': True}],
-                        parameters = [{"gpio_number": gpio_number},{"button_pin": capture_button_pin_}],
                     ),
                     ComposableNode(
                         package='image_proc',
