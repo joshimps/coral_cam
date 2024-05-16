@@ -18,7 +18,7 @@ debounce_time_us = 10000
 
 #System Settings
 number_of_captures = 10
-point_cloud_path = "/home/josh/git/coral_cam/clouds"
+point_cloud_path = "/home/pam/git/coral_cam/clouds"
 
 #Image Processing Settings
 desired_width = 800
