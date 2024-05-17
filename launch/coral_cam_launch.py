@@ -90,7 +90,7 @@ real_sense_node_params = [ {'name': 'camera_name',                  'default': '
                            {'name': 'pointcloud.allow_no_texture_points', 'default': 'false', 'description': "''"},
                            {'name': 'align_depth.enable',           'default': 'false', 'description': 'enable align depth filter'},
                            {'name': 'colorizer.enable',             'default': 'false', 'description': 'enable colorizer filter'},
-                           {'name': 'decimation_filter.enable',     'default': 'false', 'description': 'enable_decimation_filter'},
+                           {'name': 'decimation_filter.enable',     'default': 'true', 'description': 'enable_decimation_filter'},
                            {'name': 'spatial_filter.enable',        'default': 'true', 'description': 'enable_spatial_filter'},
                            {'name': 'temporal_filter.enable',       'default': 'false', 'description': 'enable_temporal_filter'},
                            {'name': 'disparity_filter.enable',      'default': 'false', 'description': 'enable_disparity_filter'},
