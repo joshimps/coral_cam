@@ -15,9 +15,9 @@
     <param name = "DistortionLeft">
         <value>0.406560</value>
         <value>0.065372</value>
-        <value>0.054601</value>
+        <value>0.000358733</value>
         <value>-0.009625</value>
-        <value>0.000000</value>
+        <value>-0.0189882</value>
     </param>
     <param name = "FocalLengthRight">
         <value>877.834</value>
@@ -31,8 +31,8 @@
         <value>0.406560</value>
         <value>0.065372</value>
         <value>0.054601</value>
-        <value>-0.009625</value>
-        <value>0.000000</value>
+        <value>-0.0189882</value>
+        <value>-0.0189882</value>
     </param>
     <param name = "RotationLeftRight">
         <value>0.999981</value>
