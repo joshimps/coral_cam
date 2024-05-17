@@ -17,7 +17,7 @@ capture_button_pin = 27
 debounce_time_us = 10000
 
 #System Settings
-number_of_captures = 1
+number_of_captures = 10
 point_cloud_path = "/home/pam/git/coral_cam/clouds"
 
 #Image Processing Settings

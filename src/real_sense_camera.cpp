@@ -58,6 +58,7 @@ namespace coral_cam
     {
         Eigen::Vector4f zero = Eigen::Vector4f::Zero();
         Eigen::Quaternionf identity = Eigen::Quaternionf::Identity();
+        path_ = this->get_parameter("point_cloud_path").as_string() + "/pcd_file_" + GetCurrentTime() + ".pcd";
         const char *path_char = path_.c_str();
 
         if (FileExists(path_char))
