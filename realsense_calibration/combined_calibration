@@ -9,7 +9,7 @@
         <value>854.31619</value>
     </param>
     <param name = "PrincipalPointLeft">
-        <value>633.1112</value>
+        <value>637.686</value>
         <value>403.332</value>
     </param>
     <param name = "DistortionLeft">
@@ -24,7 +24,7 @@
         <value>859.051</value>
     </param>
     <param name = "PrincipalPointRight">
-        <value>634.536</value>
+        <value>635.855</value>
         <value>405.882</value>
     </param>
     <param name = "DistortionRight">
