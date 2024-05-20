@@ -5,12 +5,12 @@
         <value>808</value>
     </param>
     <param name = "FocalLengthLeft">
-        <value>878.006704</value>
-        <value>976.697167</value>
+        <value>879.63387</value>
+        <value>854.31619</value>
     </param>
     <param name = "PrincipalPointLeft">
-        <value>629.111244</value>
-        <value>455.118497</value>
+        <value>632.40909</value>
+        <value>403.332</value>
     </param>
     <param name = "DistortionLeft">
         <value>0.406560</value>
@@ -20,12 +20,12 @@
         <value>0.000000</value>
     </param>
     <param name = "FocalLengthRight">
-        <value>877.833967</value>
-        <value>974.567066</value>
+        <value>879.67071</value>
+        <value>859.051</value>
     </param>
     <param name = "PrincipalPointRight">
-        <value>634.536084</value>
-        <value>447.127722</value>
+        <value>638.75126</value>
+        <value>405.882</value>
     </param>
     <param name = "DistortionRight">
         <value>0.401636</value>
@@ -50,7 +50,7 @@
         <value>-0.025826</value>
         <value>-0.107731</value>
     </param>
-   <!--  <param name = "HasRGB">
+<param name = "HasRGB">
         <value>1</value>
     </param>
     <param name = "ResolutionRGB">
@@ -87,5 +87,5 @@
         <value>0.0260377</value>
         <value>-0.00297241</value>
         <value>0.0446906</value>
-    </param>-->
+    </param>
 </Config>
