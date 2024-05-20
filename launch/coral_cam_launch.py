@@ -11,14 +11,20 @@ from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument
 
 
-#GPIO Variables
+#GPIO Settings
 gpio_number = 5
 capture_button_pin = 27
 debounce_time_us = 10000
 
-#System Settings
-number_of_captures = 10
+#Real Sense Node Settings
+number_of_real_sense_captures = 10
 point_cloud_path = "/home/pam/git/coral_cam/clouds"
+
+#Industrial Node Settings
+number_of_industrial_captures = 10
+
+#Light Settings
+blue_flash_length_ms = 1000
 
 #Image Processing Settings
 desired_width = 800
@@ -28,6 +34,7 @@ input_info = '/real_sense/color/camera_info'
 output_image = '/real_sense/color/image_rect_resized'
 output_info = '/real_sense/color/camera_info_resized'
 
+#Real Sense Image Settings
 real_sense_node_params = [ {'name': 'camera_name',                  'default': 'D405', 'description': 'camera unique name'},
                            {'name': 'camera_namespace',             'default': 'real_sense', 'description': 'namespace for camera'},
                            {'name': 'serial_no',                    'default': "''", 'description': 'choose device by serial number'},
@@ -152,6 +159,8 @@ def generate_launch_description():
                         name='industrial_camera_node',
                         namespace='coral_cam',
                         extra_arguments=[{'use_intra_process_comms': True}],
+                        parameters=[{'number_of_captures':number_of_industrial_captures},
+                                    ]
                     ),
                     ComposableNode(
                         package='coral_cam',
@@ -159,6 +168,8 @@ def generate_launch_description():
                         name='lights_node',
                         namespace='coral_cam',
                         extra_arguments=[{'use_intra_process_comms': True}],
+                        parameters=[{'blue_flash_length':blue_flash_length_ms},
+                                    ]
                     ),
                     ComposableNode(
                         package='coral_cam',
@@ -174,7 +185,7 @@ def generate_launch_description():
                         name='real_sense_camera_node',
                         namespace='coral_cam',
                         parameters = [{"point_cloud_path":point_cloud_path,
-                                       "number_of_captures":number_of_captures}],
+                                       "number_of_captures":number_of_real_sense_captures}],
                         extra_arguments=[{'use_intra_process_comms': True}],
                     ),
                     ComposableNode(
@@ -207,33 +218,5 @@ def generate_launch_description():
                 emulate_tty=True,
                 output='screen',
         ),
-        
-        #This is really bad, using a timer to delay a node startup is shoddy design. However...
-        #using this was the only way I found to get around a bug where image_proc remppings wouldn't
-        #apply if the realsense topics existed before image_proc was done loading.
-        
-        #TimerAction(
-        #    period = 5.0,
-        #    actions = [
-        #         IncludeLaunchDescription(
-        #            PythonLaunchDescriptionSource([os.path.join(
-        #            get_package_share_directory('coral_cam'), 'launch'),
-        #            '/realsense_camera_launch.py']),
-        #            launch_arguments={'camera_name': camera_name,
-        #                            'camera_namespace':camera_namespace,
-        #                            'pointcloud.enable': pointcloud_enable,
-        #                            'pointcloud.ordered_pc':pointcloud_ordered_pc,
-        #                            'enable_sync':enable_sync,
-        #                            'clip_distance' : clip_distance,
-        #                            'decimation_filter.enable':decimation_filter_enable,
-        #                            'spatial_filter.enable':spatial_filter_enable,
-        #                            'hole_filling_filter.enable':hole_filling_filter_enable,
-        #                            'enable_infra1':'true',
-        #                            'enable_infra2':'true',
-        #                            
-        #                            }.items()
-        #            ),
-        #        ]
-        #)
     ])
 
