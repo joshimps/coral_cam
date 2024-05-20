@@ -77,17 +77,30 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
 - **desired_width = 800** Width of the image displayed on the GUI 
 - **desired_height = 360** Height of the image displayed on the GUI 
 - **input_image = '/real_sense/color/image_rect_raw'** Topic of input image to resize
-- **input_info = '/real_sense/color/camera_info'** ATopic of input image info to resize
+- **input_info = '/real_sense/color/camera_info'** Topic of input image info to resize
 - **output_image = '/real_sense/color/image_rect_resized'** Topic Of Resized output image
 - **output_info = '/real_sense/color/camera_info_resized'** Topic Of Resized output image info
 
 ### Real Sense Image Settings
 For the real sense image settings please refer to the documentation found on the [Intel Real Sense ROS Github](https://github.com/IntelRealSense/realsense-ros)
-   
-## Setup and Running
+
+## Camera Calibration
+Four profiles are provided with the package to get better performance from the D405 underwater.
+
+- approx_calibration: Produced from approxoimate values, seconds best calibration
+- ros_calibration: Produced using ros_calibration package, very inaccurate focal length and principal point values but has good distortion coefficients
+- default_calibration: The default calibration the camera was shipped with, must be reuploaded for accurate in-air use
+- combined_calibration: A combination of the approx_calibration and ros_calibration with futher focal length tuning, most accurate profile in water with +/- 3mm accuracy at 300mm away
+
+These calibration profile can be written to the D405 camera using the CustomRW tool provided by Intel and installed during the UpBoard Squared V2 Setup. For example to write the default calibration to the camera. 
+`cd ~/pam/git/coral_cam/realsense_calibration`\
+`Intel.Realsense.CustomRW -w -f default_calibration`
+
+
+## Running
 
 1. Unfortunately for the moment LGPIO needs sudo priviledges to access the GPIO devices. \ Start a new sudo command line with \
-   `sudo -i` \
+   `sudo -i` 
 2. If you added sources to your .bashrc simply source .bashrc now
    `source /home/pam/.bashrc` \
    If you did not add these sources to your .bashrc source them now \
