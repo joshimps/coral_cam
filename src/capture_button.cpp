@@ -15,7 +15,6 @@ namespace coral_cam
         gpio_handle_ = -1;
         pin_value_ = -1;
         pin_configured_ = false;
-        read_error_ = false;
 
         debounce_time_us_ = this->get_parameter("debounce_time_us").as_int();
         capture_button_pin_ = this->get_parameter("capture_button_pin").as_int();
@@ -45,21 +44,11 @@ namespace coral_cam
         }
         else if (capture_button_pin_ < 0)
         {
-            if (!read_error_)
-            {
-                RCLCPP_ERROR(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD PIN NUMBER: %d", capture_button_pin_);
-                read_error_ = true;
-            }
-            return;
+            RCLCPP_ERROR_ONCE(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD PIN NUMBER: %d", capture_button_pin_);
         }
         else if (gpio_handle_ < 0)
         {
-            if (!read_error_)
-            {
-               RCLCPP_ERROR(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD GPIO HANDLE: %d", gpio_handle_);
-               read_error_ = true;
-            }
-            return;
+            RCLCPP_ERROR_ONCE(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD GPIO HANDLE: %d", gpio_handle_);
         }
 
         previous_pin_value_ = pin_value_;
@@ -77,7 +66,7 @@ namespace coral_cam
         }
         else
         {
-            RCLCPP_ERROR(this->get_logger(), "BAD PIN READ, CHECK FOR BAD WIRING");
+            RCLCPP_ERROR_ONCE(this->get_logger(), "BAD PIN READ, CHECK FOR BAD WIRING");
         }
     }
 

@@ -63,6 +63,5 @@ namespace coral_cam
         int previous_pin_value_;
 
         bool pin_configured_;
-        bool read_error_;
     };
 }

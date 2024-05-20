@@ -31,7 +31,7 @@ namespace coral_cam
         // Constructors and Destructors                                                                          //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        Gui(QTabWidget *parent);
+        Gui(const rclcpp::NodeOptions &options, QTabWidget *parent);
         ~Gui();
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Public Methods                                                                                        //
@@ -54,7 +54,7 @@ namespace coral_cam
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscriber_;
         rclcpp::Subscription<std_msgs::msg::String>::SharedPtr temperature_subscriber_;
-        rclcpp::Subscription<std_msgs::msg::String>::SharedPtr baattery_subscriber_;
+        rclcpp::Subscription<std_msgs::msg::String>::SharedPtr battery_subscriber_;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Constants                                                                                             //

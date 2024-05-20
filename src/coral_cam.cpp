@@ -20,7 +20,6 @@ int main(int argc, char *argv[])
     rclcpp::NodeOptions industrial_camera_options;
     rclcpp::NodeOptions lights_options;
     rclcpp::NodeOptions gpio_options;
-    rclcpp::NodeOptions gui_options;
     rclcpp::NodeOptions temperature_sensor_options;
 
     auto battery = std::make_shared<coral_cam::Battery>(battery_options);

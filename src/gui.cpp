@@ -2,7 +2,7 @@
 
 namespace coral_cam
 {
-    Gui::Gui(QTabWidget *parent) : QTabWidget(parent), rclcpp::Node("gui_node")
+    Gui::Gui(const rclcpp::NodeOptions &options, QTabWidget *parent) : QTabWidget(parent), rclcpp::Node("gui_node",options)
     {
 
         rclcpp::QoS qos_settings(rclcpp::KeepLast(10), rmw_qos_profile_sensor_data);
@@ -13,7 +13,7 @@ namespace coral_cam
         temperature_subscriber_ = this->create_subscription<std_msgs::msg::String>(
             "/coral_cam/current_temperature", 10, std::bind(&Gui::setTemperature, this, std::placeholders::_1));
 
-        baattery_subscriber_ = this->create_subscription<std_msgs::msg::String>(
+        battery_subscriber_ = this->create_subscription<std_msgs::msg::String>(
             "/coral_cam/current_battery", 10, std::bind(&Gui::setBattery, this, std::placeholders::_1));
 
         this->setFixedSize(800, 480);
@@ -105,9 +105,11 @@ int main(int argc, char *argv[])
     rclcpp::init(argc, argv);
 
     rclcpp::executors::MultiThreadedExecutor executor;
+    rclcpp::NodeOptions gui_options;
+    gui_options.use_intra_process_comms(true);
 
     QTabWidget *parent = 0;
-    auto gui = std::make_shared<coral_cam::Gui>(parent);
+    auto gui = std::make_shared<coral_cam::Gui>(gui_options,parent);
     executor.add_node(gui);
 
     app.processEvents();
