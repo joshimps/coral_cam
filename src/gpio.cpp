@@ -20,7 +20,7 @@ namespace coral_cam
         }
         else
         {
-            RCLCPP_ERROR(this->get_logger(), "SUCESSFULLY CREATED GPIO HANDLE: %d", gpio_handle_);
+            RCLCPP_INFO(this->get_logger(), "SUCESSFULLY CREATED GPIO HANDLE: %d", gpio_handle_);
         }
 
         gpio_handle_publisher_ = this->create_publisher<std_msgs::msg::Int64>("gpio_handle_topic", 1);
