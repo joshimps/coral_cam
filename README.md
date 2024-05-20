@@ -90,7 +90,7 @@ For the real sense image settings please refer to the documentation found on the
    `sudo -i`
 2. If you added sources to your .bashrc simply source .bashrc now
    `source /home/pam/.bashrc` \
-   If you did not add these sources to your .bashrc source them now
+   If you did not add these sources to your .bashrc source them now \
    `source /opt/ros/humble/setup.bash` \
    `source /home/pam/pam_ws/install/local_setup.bash`
 3. After configuring your parameters in coral_cam_launch.py launch the file
