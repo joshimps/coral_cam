@@ -56,30 +56,30 @@ Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squar
 ## Parameters
 
 ### GPIO Settings
-**gpio_number = 5** GPIO register which the peripherals are attached to, on the UpBoard GPIO use register 5
-**capture_button_pin = 27** pin number in Raspberry Pi GPIO numbering for the capture button to be connected to
-**debounce_time_us = 10000** number of nanoseconds to be used for button debounce time
+- **gpio_number = 5** GPIO register which the peripherals are attached to, on the UpBoard GPIO use register 5
+- **capture_button_pin = 27** pin number in Raspberry Pi GPIO numbering for the capture button to be connected to
+- **debounce_time_us = 10000** number of nanoseconds to be used for button debounce time
 
 ### Real Sense Node Settings
--**number_of_real_sense_captures = 10** Number of point clouds the real sense camera should write after the capture button is pressed
--**point_cloud_path = "/home/pam/git/coral_cam/clouds"** Location the point cloud captures will be written to
+- **number_of_real_sense_captures = 10** Number of point clouds the real sense camera should write after the capture button is pressed
+- **point_cloud_path = "/home/pam/git/coral_cam/clouds"** Location the point cloud captures will be written to
 
 ### Industrial Node Settings
--**number_of_industrial_captures = 10** Number of photos the industrial camera should write after the capture button is pressed
+- **number_of_industrial_captures = 10** Number of photos the industrial camera should write after the capture button is pressed
 
 ### Light Settings
--**blue_flash_length_ms = 1000** Time in milliseconds the blue light should remain on for
+- **blue_flash_length_ms = 1000** Time in milliseconds the blue light should remain on for
 
 ### Temperature Settings
--**cuttoff_temperature = 100** Maximum temperature in degrees celsius before automatic shutdown
+- **cuttoff_temperature = 100** Maximum temperature in degrees celsius before automatic shutdown
 
 ### Image Processing Settings (Best If Left Alone)
--**desired_width = 800** Width of the image displayed on the GUI 
--**desired_height = 360** Height of the image displayed on the GUI 
--**input_image = '/real_sense/color/image_rect_raw'** Topic of input image to resize
--**input_info = '/real_sense/color/camera_info'** ATopic of input image info to resize
--**output_image = '/real_sense/color/image_rect_resized'** Topic Of Resized output image
--**output_info = '/real_sense/color/camera_info_resized'** Topic Of Resized output image info
+- **desired_width = 800** Width of the image displayed on the GUI 
+- **desired_height = 360** Height of the image displayed on the GUI 
+- **input_image = '/real_sense/color/image_rect_raw'** Topic of input image to resize
+- **input_info = '/real_sense/color/camera_info'** ATopic of input image info to resize
+- **output_image = '/real_sense/color/image_rect_resized'** Topic Of Resized output image
+- **output_info = '/real_sense/color/camera_info_resized'** Topic Of Resized output image info
 
 ### Real Sense Image Settings
 For the real sense image settings please refer to the documentation found on the [Intel Real Sense ROS Github](https://github.com/IntelRealSense/realsense-ros)
