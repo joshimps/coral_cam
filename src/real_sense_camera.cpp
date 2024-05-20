@@ -12,12 +12,17 @@ namespace coral_cam
         industrial_camera_capture_in_progress_subscriber_ = this->create_subscription<std_msgs::msg::Bool>(
             "industrial_camera_capture_in_progress", 10, std::bind(&RealSenseCamera::StartWritingPointCloud, this, std::placeholders::_1));
 
-        real_sense_subscriber_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
+        point_cloud_subscriber_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
             "/real_sense/depth/color/points", 10, std::bind(&RealSenseCamera::GetCurrentPointCloud, this, std::placeholders::_1));
+
+        depth_image_subscriber_ = this->create_subscription<sensor_msgs::msg::Image>(
+            "/real_sense/depth/image_rect_raw", 10, std::bind(&RealSenseCamera::GetCurrentDepthMap, this, std::placeholders::_1));
 
         real_sense_capture_in_progress_publisher_ = this->create_publisher<std_msgs::msg::Bool>("real_sense_capture_in_progress", 10);
 
         capture_in_progress_publisher_ = this->create_publisher<std_msgs::msg::Bool>("capture_in_progress", 10);
+
+        centre_distance_publisher_ = this->create_publisher<std_msgs::msg::Int64>("centre_distance",10);
 
         path_ = this->get_parameter("point_cloud_path").as_string() + "/pcd_file_" + GetCurrentTime() + ".pcd";
         number_of_files_ = 0;
@@ -61,6 +66,14 @@ namespace coral_cam
             RCLCPP_INFO(this->get_logger(), "FULL CAPTURE COMPLETED SUCCESSFULLY");
             capture_in_progress_publisher_->publish(inProgress);
         }
+    }
+
+    void RealSenseCamera::GetCurrentDepthMap(sensor_msgs::msg::Image::SharedPtr msg){
+        current_depth_map_as_cv_image_ = cv_bridge::toCvCopy(msg);
+        centre_distance_ = current_depth_map_as_cv_image_->image.at<u_int16_t>(current_depth_map_as_cv_image_->image.rows/2, current_depth_map_as_cv_image_->image.cols/2);
+        std_msgs::msg::Int64 centre_distance;
+        centre_distance.data = centre_distance_;
+        centre_distance_publisher_->publish(centre_distance);
     }
 
     void RealSenseCamera::WritePointCloudtoFile(pcl::PCLPointCloud2 point_cloud)

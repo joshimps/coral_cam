@@ -1,7 +1,10 @@
 #include "rclcpp/rclcpp.hpp"
+
 #include "sensor_msgs/msg/image.hpp"
-#include "std_msgs/msg/float64.hpp"
+
+#include "std_msgs/msg/int64.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "std_msgs/msg/bool.hpp"
 
 #include <QApplication>
 #include <QMainWindow>
@@ -33,6 +36,7 @@ namespace coral_cam
 
         Gui(const rclcpp::NodeOptions &options, QTabWidget *parent);
         ~Gui();
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Public Methods                                                                                        //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,9 +45,14 @@ namespace coral_cam
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Callbacks                                                                                             //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        void setCameraFrame(sensor_msgs::msg::Image::SharedPtr msg);
-        void setTemperature(std_msgs::msg::String::SharedPtr msg);
-        void setBattery(std_msgs::msg::String::SharedPtr msg);
+
+        void SetCameraFrame(sensor_msgs::msg::Image::SharedPtr msg);
+        void SetTemperature(std_msgs::msg::String::SharedPtr msg);
+        void SetBattery(std_msgs::msg::String::SharedPtr msg);
+        void SetCaptureStatus(std_msgs::msg::Bool::SharedPtr msg);
+        void SetCentreDistance(std_msgs::msg::Int64::SharedPtr msg);
+
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Private Methods                                                                                       //
@@ -52,9 +61,14 @@ namespace coral_cam
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Node, Publishers and Subscribers                                                                      //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscriber_;
         rclcpp::Subscription<std_msgs::msg::String>::SharedPtr temperature_subscriber_;
         rclcpp::Subscription<std_msgs::msg::String>::SharedPtr battery_subscriber_;
+        rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr capture_status_subscriber_;
+        rclcpp::Subscription<std_msgs::msg::Int64>::SharedPtr centre_distance_subscriber_;
+
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Constants                                                                                             //
@@ -77,6 +91,7 @@ namespace coral_cam
 
         QHBoxLayout *pam_footer_bar_;
         QLabel *depth_to_center_;
+        QLabel *capture_status_;
 
         QWidget *settings_tab_;
         QGridLayout *settings_tab_grid_layout_;

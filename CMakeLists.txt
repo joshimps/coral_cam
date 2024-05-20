@@ -30,6 +30,7 @@ find_package(realsense2_camera REQUIRED)
 
 #Image Processing
 find_package(image_proc REQUIRED)
+find_package(cv_bridge REQUIRED)
 
 #LGPIO
 find_library(LGPIO_FOUND lgpio)
@@ -75,7 +76,7 @@ target_link_libraries(capture_button_component lgpio)
 
 add_library(realsense_camera_component SHARED src/real_sense_camera.cpp)
 rclcpp_components_register_nodes(realsense_camera_component "coral_cam::RealSenseCamera")
-ament_target_dependencies(realsense_camera_component rclcpp_components rclcpp std_msgs sensor_msgs pcl_conversions)
+ament_target_dependencies(realsense_camera_component rclcpp_components rclcpp std_msgs sensor_msgs pcl_conversions cv_bridge)
 target_link_libraries(realsense_camera_component ${PCL_LIBRARIES} helpers)
 
 add_library(industrial_camera_component SHARED src/industrial_camera.cpp)

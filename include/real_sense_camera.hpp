@@ -2,10 +2,12 @@
 
 #include <std_msgs/msg/string.hpp>
 #include <std_msgs/msg/bool.hpp>
-#include <std_msgs/msg/float64.hpp>
+#include <std_msgs/msg/int64.hpp>
 
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <sensor_msgs/msg/image.hpp>
+
+#include <cv_bridge/cv_bridge.h>
 
 #include <pcl/PCLPointCloud2.h>
 #include <pcl/impl/point_types.hpp>
@@ -33,6 +35,7 @@ namespace coral_cam
         */
         void WritePointCloudtoFile(pcl::PCLPointCloud2 pointcloud);
 
+
     private:
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Callbacks                                                                                             //
@@ -42,15 +45,20 @@ namespace coral_cam
 
         void GetCurrentPointCloud(sensor_msgs::msg::PointCloud2::SharedPtr msg);
 
+        void GetCurrentDepthMap(sensor_msgs::msg::Image::SharedPtr msg);
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Node, Publishers and Subscribers                                                                      //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr real_sense_subscriber_;
+        rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr point_cloud_subscriber_;
+        rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr depth_image_subscriber_;
+
         rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr industrial_camera_capture_in_progress_subscriber_;
 
         rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr real_sense_capture_in_progress_publisher_;
         rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr capture_in_progress_publisher_;
+        rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr centre_distance_publisher_;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Variables                                                                                             //
@@ -64,6 +72,10 @@ namespace coral_cam
 
         sensor_msgs::msg::PointCloud2 current_point_cloud_;
         pcl::PCLPointCloud2 saved_point_cloud_as_pcl_;
+
+        sensor_msgs::msg::Image current_depth_map_;
+        cv_bridge::CvImageConstPtr current_depth_map_as_cv_image_;
+        double centre_distance_;
 
         bool previous_industrial_camera_capture_in_progress_;
         bool industrial_camera_capture_in_progress_;
