@@ -40,15 +40,11 @@ namespace coral_cam
         // Callbacks                                                                                             //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        /**
-        Saves the current point cloud seen by the Intel Realsense camera if the capture button is pressed
-        */
-        void SavePointCloud(std_msgs::msg::Bool::SharedPtr msg);
+        
+        void StartWritingPointCloud(std_msgs::msg::Bool::SharedPtr msg);
 
-        /**
-        Returns the current point cloud save in currentPointCloud_;
-        */
-        void ReadCurrentPointCloud(sensor_msgs::msg::PointCloud2::SharedPtr msg);
+        
+        void GetCurrentPointCloud(sensor_msgs::msg::PointCloud2::SharedPtr msg);
 
 
         //void CalculateCurrentCentreDepth(sensor_msgs::msg::Image::SharedPtr msg);
@@ -61,8 +57,10 @@ namespace coral_cam
         // Node, Publishers and Subscribers                                                                      //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr real_sense_subscriber_;
-        rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr capture_button_subscriber_;
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr depth_image_subscriber_;
+        rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr industrial_camera_capture_in_progress_subscriber_;
+        rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr real_sense_capture_in_progress_publisher_;
+        rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr capture_in_progress_publisher_;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Constants                                                                                             //
@@ -73,14 +71,17 @@ namespace coral_cam
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         std::string path_;
         int number_of_files_;
-        int number_of_files_to_save_;
+
+        int previous_number_of_captures_to_save_;
+        int number_of_captures_to_save_;
 
         sensor_msgs::msg::PointCloud2 current_point_cloud_;
         pcl::PCLPointCloud2 saved_point_cloud_as_pcl_;
 
         int pixels_[2];
 
-        int current_capture_button_value_;
-        int previous_capture_button_value_;
+
+        bool previous_industrial_camera_capture_in_progress_;
+        bool industrial_camera_capture_in_progress_;
     };
 }

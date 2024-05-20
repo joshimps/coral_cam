@@ -7,8 +7,6 @@
 #include <chrono>
 #include <thread>
 
-using namespace std::chrono_literals;
-
 namespace coral_cam
 {
     class CaptureButton : public rclcpp::Node
@@ -46,7 +44,7 @@ namespace coral_cam
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Node,Timers, Publishers and Subscribers                                                                      //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr button_pressed_publisher_;
+        rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr capture_in_progress_publisher_;
         rclcpp::Subscription<std_msgs::msg::Int64>::SharedPtr gpio_handle_subscriber_;
         rclcpp::Subscription<std_msgs::msg::Int64>::SharedPtr button_pin_subscriber_;
         rclcpp::TimerBase::SharedPtr timer_;
@@ -63,6 +61,9 @@ namespace coral_cam
 
         int capture_button_pin_;
         int debounce_time_us_;
+
+        int pin_value_;
+        int previous_pin_value_;
 
         bool pin_configured_;
         bool read_error_;

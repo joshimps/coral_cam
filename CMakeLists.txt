@@ -78,13 +78,21 @@ rclcpp_components_register_nodes(realsense_camera_component "coral_cam::RealSens
 ament_target_dependencies(realsense_camera_component rclcpp_components rclcpp std_msgs sensor_msgs pcl_conversions)
 target_link_libraries(realsense_camera_component ${PCL_LIBRARIES} helpers)
 
+add_library(industrial_camera_component SHARED src/industrial_camera.cpp)
+rclcpp_components_register_nodes(industrial_camera_component "coral_cam::IndustrialCamera")
+ament_target_dependencies(industrial_camera_component rclcpp_components rclcpp std_msgs sensor_msgs)
+
+add_library(lights_component SHARED src/lights.cpp)
+rclcpp_components_register_nodes(lights_component "coral_cam::Lights")
+ament_target_dependencies(lights_component rclcpp_components rclcpp std_msgs sensor_msgs)
+
 add_library(gpio_component SHARED src/gpio.cpp)
 rclcpp_components_register_nodes(gpio_component "coral_cam::Gpio")
 ament_target_dependencies(gpio_component rclcpp_components rclcpp std_msgs)
 target_link_libraries(gpio_component lgpio )
 
 add_executable(coral_cam src/coral_cam.cpp)
-target_link_libraries(coral_cam battery_component capture_button_component gpio_component realsense_camera_component temperature_sensor_component) 
+target_link_libraries(coral_cam battery_component capture_button_component gpio_component realsense_camera_component lights_component industrial_camera_component temperature_sensor_component) 
 
 add_executable(gui include/gui.hpp src/gui.cpp)
 ament_target_dependencies(gui rclcpp_components rclcpp sensor_msgs)
@@ -95,6 +103,8 @@ ament_export_targets(export_capture_button_component)
 ament_export_targets(export_realsense_camera_component)
 ament_export_targets(export_gpio_component)
 ament_export_targets(export_temperature_sensor_component)
+ament_export_targets(export_industrial_camera_component)
+ament_export_targets(export_lights_component)
 ament_export_targets(export_helpers)
 
 install(TARGETS capture_button_component
@@ -126,6 +136,20 @@ install(TARGETS battery_component
 
 install(TARGETS temperature_sensor_component
         EXPORT export_temperature_sensor_component
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
+)
+
+install(TARGETS industrial_camera_component
+        EXPORT export_industrial_camera_component
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
+)
+
+install(TARGETS lights_component
+        EXPORT export_lights_component
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin

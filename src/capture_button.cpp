@@ -13,14 +13,15 @@ namespace coral_cam
         this->declare_parameter("capture_button_pin", -1);
 
         gpio_handle_ = -1;
+        pin_value_ = -1;
         pin_configured_ = false;
         read_error_ = false;
 
         debounce_time_us_ = this->get_parameter("debounce_time_us").as_int();
         capture_button_pin_ = this->get_parameter("capture_button_pin").as_int();
 
-        button_pressed_publisher_ = this->create_publisher<std_msgs::msg::Bool>("pin_value", 10);
-        timer_ = this->create_wall_timer(10ms, std::bind(&CaptureButton::ReadPin, this));
+        capture_in_progress_publisher_ = this->create_publisher<std_msgs::msg::Bool>("capture_in_progress", 10);
+        timer_ = this->create_wall_timer(std::chrono::milliseconds(10), std::bind(&CaptureButton::ReadPin, this));
 
         gpio_handle_subscriber_ = this->create_subscription<std_msgs::msg::Int64>(
             "gpio_handle_topic", 10, std::bind(&CaptureButton::SetGpioHandle, this, std::placeholders::_1));
@@ -34,8 +35,6 @@ namespace coral_cam
 
     void CaptureButton::ReadPin()
     {
-
-        int pin_value;
 
         if (pin_configured_ == false && capture_button_pin_ > -1 && gpio_handle_ > -1)
         {
@@ -51,7 +50,6 @@ namespace coral_cam
                 RCLCPP_ERROR(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD PIN NUMBER: %d", capture_button_pin_);
                 read_error_ = true;
             }
-            return;
         }
         else if (gpio_handle_ < 0)
         {
@@ -60,20 +58,24 @@ namespace coral_cam
                RCLCPP_ERROR(this->get_logger(), "CAPTURE BUTTON RECIEVED BAD GPIO HANDLE: %d", gpio_handle_);
                read_error_ = true;
             }
-            return;
         }
 
-        pin_value = lgGpioRead(gpio_handle_, capture_button_pin_);
+        previous_pin_value_ = pin_value_;
+        pin_value_ = lgGpioRead(gpio_handle_, capture_button_pin_);
 
-        if (pin_value == 1 || pin_value == 0)
+        if (pin_value_ == 1 || pin_value_ == 0)
         {
-            std_msgs::msg::Bool button_pressed_message;
-            button_pressed_message.data = pin_value;
-            button_pressed_publisher_->publish(button_pressed_message);
+            if(pin_value_ == 0 && previous_pin_value_ == 1){
+                RCLCPP_INFO(this->get_logger(), "STARTING CAPTURE");
+                std_msgs::msg::Bool capture_in_progress;
+                capture_in_progress.data = true;
+                capture_in_progress_publisher_->publish(capture_in_progress);
+            }
+           
         }
         else
         {
-            RCLCPP_ERROR(this->get_logger(), "BAD PIN READ, CHECK FOR BAD WIRING");
+            //RCLCPP_ERROR(this->get_logger(), "BAD PIN READ, CHECK FOR BAD WIRING");
         }
     }
 

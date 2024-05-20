@@ -148,6 +148,20 @@ def generate_launch_description():
                     ),
                     ComposableNode(
                         package='coral_cam',
+                        plugin='coral_cam::IndustrialCamera',
+                        name='industrial_camera_node',
+                        namespace='coral_cam',
+                        extra_arguments=[{'use_intra_process_comms': True}],
+                    ),
+                    ComposableNode(
+                        package='coral_cam',
+                        plugin='coral_cam::Lights',
+                        name='lights_node',
+                        namespace='coral_cam',
+                        extra_arguments=[{'use_intra_process_comms': True}],
+                    ),
+                    ComposableNode(
+                        package='coral_cam',
                         plugin='coral_cam::Gpio',
                         name='gpio_node',
                         namespace='coral_cam',
