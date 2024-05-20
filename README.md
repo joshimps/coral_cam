@@ -13,12 +13,13 @@ This package is designed to run and manage the different components of the under
 3. Connect the Waveshare 3.5 inch screen using HDMI
 4. Set the resolution through the GNOME settings to 800x480
 5. Connect the Intel Real Sense D405 using USB
-6. Connect all GPIO peripherals according to the pinout table below
+6. Download and install the dynamic calibration toolset from Intel to get the caalibration reader/writer by following the instructions [here](https://www.intel.com/content/www/us/en/download/645988/intel-realsense-d400-series-dynamic-calibration-tool.html)
+7. Connect all GPIO peripherals according to the pinout table below
 
    ![gpio](https://github.com/up-board/up-community/raw/main/images/up2/up2pinout_04092021.jpg)
 
-## Package Installation
-Assuming a fresh install of Ubuntu 22.04 has been installed on the UpBoard Squared V2.
+
+## ROS & Package Installation
 
 1. Install ROS 2 Humble from debian following the instructions found [here](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html#id2).
 
