@@ -92,7 +92,7 @@ Four profiles are provided with the package to get better performance from the D
 - default_calibration: The default calibration the camera was shipped with, must be reuploaded for accurate in-air use
 - combined_calibration: A combination of the approx_calibration and ros_calibration with futher focal length tuning, most accurate profile in water with +/- 3mm accuracy at 300mm away
 
-These calibration profile can be written to the D405 camera using the CustomRW tool provided by Intel and installed during the UpBoard Squared V2 Setup. For example to write the default calibration to the camera. 
+These calibration profile can be written to the D405 camera using the CustomRW tool provided by Intel and installed during the UpBoard Squared V2 Setup. For example to write the default calibration to the camera. \
 `cd ~/pam/git/coral_cam/realsense_calibration`\
 `Intel.Realsense.CustomRW -w -f default_calibration`
 
