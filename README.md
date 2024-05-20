@@ -89,7 +89,7 @@ For the real sense image settings please refer to the documentation found on the
 1. Unfortunately for the moment LGPIO needs sudo priviledges to access the GPIO devices. Start a new sudo command line with
    `sudo -i`
 2. If you added sources to your .bashrc simply source .bashrc now
-   `source /home/pam/.bashrc`
+   `source /home/pam/.bashrc` \
    If you did not add these sources to your .bashrc source them now
    `source /opt/ros/humble/setup.bash` \
    `source /home/pam/pam_ws/install/local_setup.bash`
