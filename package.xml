@@ -17,6 +17,7 @@
   <depend>libpcl-all</depend>
   <depend>pcl_conversions</depend>
   <depend>image_proc</depend>
+  <depend>cv_bridge</depend>
 
 
   <build_depend>qtbase5-dev</build_depend>
