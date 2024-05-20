@@ -6,6 +6,7 @@
 #include "lights.hpp"
 #include "real_sense_camera.hpp"
 #include "gpio.hpp"
+#include "temperature_sensor.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -18,9 +19,14 @@ int main(int argc, char *argv[])
     rclcpp::NodeOptions real_sense_camera_options;
     rclcpp::NodeOptions gpio_options;
     rclcpp::NodeOptions gui_options;
+    rclcpp::NodeOptions temperature_sensor_options;
+
 
     auto battery = std::make_shared<coral_cam::Battery>(battery_options);
     executor.add_node(battery);
+
+    auto temperature_sensor = std::make_shared<coral_cam::TemperatureSensor>(temperature_sensor_options);
+    executor.add_node(temperature_sensor);
 
     auto capture_button = std::make_shared<coral_cam::CaptureButton>(capture_button_options);
     executor.add_node(capture_button);

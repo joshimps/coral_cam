@@ -123,10 +123,17 @@ def generate_launch_description():
                 package='rclcpp_components',
                 executable='component_container_mt',
                 composable_node_descriptions=[
-                     ComposableNode(
+                    ComposableNode(
                         package='coral_cam',
                         plugin='coral_cam::Battery',
                         name='battery_node',
+                        namespace='coral_cam',
+                        extra_arguments=[{'use_intra_process_comms': True}],
+                    ),
+                    ComposableNode(
+                        package='coral_cam',
+                        plugin='coral_cam::TemperatureSensor',
+                        name='temperature_sensor_node',
                         namespace='coral_cam',
                         extra_arguments=[{'use_intra_process_comms': True}],
                     ),

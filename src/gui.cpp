@@ -6,8 +6,15 @@ namespace coral_cam
     {
 
         rclcpp::QoS qos_settings(rclcpp::KeepLast(10), rmw_qos_profile_sensor_data);
+
         image_subscriber_ = this->create_subscription<sensor_msgs::msg::Image>(
-            "/real_sense/color/image_rect_resized", qos_settings, std::bind(&Gui::CameraFrameRecieved, this, std::placeholders::_1));
+            "/real_sense/color/image_rect_resized", qos_settings, std::bind(&Gui::setCameraFrame, this, std::placeholders::_1));
+
+        temperature_subscriber_ = this->create_subscription<std_msgs::msg::String>(
+            "/coral_cam/current_temperature", 10, std::bind(&Gui::setTemperature, this, std::placeholders::_1));
+
+        baattery_subscriber_ = this->create_subscription<std_msgs::msg::String>(
+            "/coral_cam/current_battery", 10, std::bind(&Gui::setBattery, this, std::placeholders::_1));
 
         this->setFixedSize(800, 480);
 
@@ -36,12 +43,12 @@ namespace coral_cam
         pam_tab_grid_layout_->addLayout(pam_header_bar_,0,0);
 
         current_temp_ = new QLabel();
-        current_temp_->setText("Current Temperature: ");
+        current_temp_->setText("Current Temperature: LOADING");
         current_temp_->setAlignment(Qt::AlignLeft);
         pam_header_bar_->addWidget(current_temp_);
 
         current_battery_ = new QLabel();
-        current_battery_->setText("Current Battery:    ");
+        current_battery_->setText("Current Battery: LOADING");
         pam_header_bar_->addWidget(current_battery_);
         current_battery_->setAlignment(Qt::AlignRight);
 
@@ -72,11 +79,21 @@ namespace coral_cam
     {
     }
 
-    void Gui::CameraFrameRecieved(sensor_msgs::msg::Image msg)
+    void Gui::setCameraFrame(sensor_msgs::msg::Image::SharedPtr msg)
     {
         QImage::Format format = QImage::Format_RGB888;
-        QPixmap current_real_sense_camera_pix_map = QPixmap::fromImage(QImage(&msg.data[0], msg.width, msg.height, format));
+        QPixmap current_real_sense_camera_pix_map = QPixmap::fromImage(QImage(&msg->data[0], msg->width, msg->height, format));
         camera_feed_->setPixmap(current_real_sense_camera_pix_map);
+    }
+
+    void Gui::setTemperature(std_msgs::msg::String::SharedPtr msg){
+        std::string text = "Current Temperature: " + msg->data;
+        current_temp_->setText(text.c_str());
+    }
+
+    void Gui::setBattery(std_msgs::msg::String::SharedPtr msg){
+        std::string text = "Current Battery: " + msg->data;
+        current_battery_->setText(text.c_str());
     }
 
 }

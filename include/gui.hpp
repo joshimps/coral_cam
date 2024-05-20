@@ -1,6 +1,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "std_msgs/msg/float64.hpp"
+#include "std_msgs/msg/string.hpp"
 
 #include <QApplication>
 #include <QMainWindow>
@@ -40,7 +41,9 @@ namespace coral_cam
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Callbacks                                                                                             //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        void CameraFrameRecieved(sensor_msgs::msg::Image msg);
+        void setCameraFrame(sensor_msgs::msg::Image::SharedPtr msg);
+        void setTemperature(std_msgs::msg::String::SharedPtr msg);
+        void setBattery(std_msgs::msg::String::SharedPtr msg);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Private Methods                                                                                       //
@@ -50,6 +53,10 @@ namespace coral_cam
         // Node, Publishers and Subscribers                                                                      //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscriber_;
+        rclcpp::Subscription<std_msgs::msg::String>::SharedPtr temperature_subscriber_;
+        rclcpp::Subscription<std_msgs::msg::String>::SharedPtr baattery_subscriber_;
+
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Constants                                                                                             //

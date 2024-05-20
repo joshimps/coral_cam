@@ -4,7 +4,7 @@ namespace coral_cam
 {
     Battery::Battery(const rclcpp::NodeOptions &options) : Node("battery_node", options){
         //Every minute we will publish the battery percentage
-        current_battery_publisher_ = this->create_publisher<std_msgs::msg::String>("current_battery_level", 10);
+        current_battery_publisher_ = this->create_publisher<std_msgs::msg::String>("current_battery", 10);
         timer_ = this->create_wall_timer(60000ms, std::bind(&Battery::ReadBatteryPercentage, this));
 
         //Ideally we would set up the battery reading here

@@ -84,7 +84,7 @@ ament_target_dependencies(gpio_component rclcpp_components rclcpp std_msgs)
 target_link_libraries(gpio_component lgpio )
 
 add_executable(coral_cam src/coral_cam.cpp)
-target_link_libraries(coral_cam battery_component capture_button_component gpio_component realsense_camera_component) 
+target_link_libraries(coral_cam battery_component capture_button_component gpio_component realsense_camera_component temperature_sensor_component) 
 
 add_executable(gui include/gui.hpp src/gui.cpp)
 ament_target_dependencies(gui rclcpp_components rclcpp sensor_msgs)
