@@ -22,7 +22,6 @@ namespace coral_cam
         centre_distance_subscriber_ = this->create_subscription<std_msgs::msg::Int64>(
             "/coral_cam/centre_distance", 10, std::bind(&Gui::SetCentreDistance, this, std::placeholders::_1));
 
-        this->setFixedSize(800, 480);
 
         // Create the first tab where our pam display will go
         QSizePolicy expandingSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -64,6 +63,8 @@ namespace coral_cam
 
         // Create and position the footer display
         pam_footer_bar_ = new QHBoxLayout();
+        pam_footer_bar_->setStretch(0, 50);
+        pam_footer_bar_->setStretch(1, 50);
         pam_tab_grid_layout_->addLayout(pam_footer_bar_, 2, 0);
 
         depth_to_center_ = new QLabel();
@@ -83,6 +84,7 @@ namespace coral_cam
         settings_tab_grid_layout_ = new QGridLayout(settings_tab_);
 
         this->show();
+        this->showFullScreen();
     }
 
     Gui::~Gui()
