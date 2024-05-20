@@ -23,7 +23,6 @@ int main(int argc, char *argv[])
     rclcpp::NodeOptions gui_options;
     rclcpp::NodeOptions temperature_sensor_options;
 
-
     auto battery = std::make_shared<coral_cam::Battery>(battery_options);
     executor.add_node(battery);
 
@@ -51,11 +50,10 @@ int main(int argc, char *argv[])
         {
             executor.spin_some();
         }
-        catch(const std::exception& e)
+        catch (const std::exception &e)
         {
             rclcpp::shutdown();
         }
-        
     }
 
     rclcpp::shutdown();

@@ -35,7 +35,7 @@ namespace coral_cam
 
     void CaptureButton::ReadPin()
     {
-
+        //If the GPIO Handle and PIN specified are good setup the pin for reading
         if (pin_configured_ == false && capture_button_pin_ > -1 && gpio_handle_ > -1)
         {
             lgGpioClaimInput(gpio_handle_, lflags_, capture_button_pin_);

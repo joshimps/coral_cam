@@ -21,26 +21,26 @@ namespace coral_cam
         // Create the first tab where our pam display will go
         QSizePolicy expandingSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-        //Create a tab for the pam display to go
+        // Create a tab for the pam display to go
         pam_tab_ = new QWidget();
         this->addTab(pam_tab_, QString("PAM"));
         pam_tab_->setSizePolicy(expandingSizePolicy);
 
         pam_tab_grid_layout_ = new QGridLayout(pam_tab_);
-        pam_tab_grid_layout_->setRowStretch(0,12.5);
-        pam_tab_grid_layout_->setRowStretch(1,75);
-        pam_tab_grid_layout_->setRowStretch(2,12.5);
+        pam_tab_grid_layout_->setRowStretch(0, 12.5);
+        pam_tab_grid_layout_->setRowStretch(1, 75);
+        pam_tab_grid_layout_->setRowStretch(2, 12.5);
 
-        pam_tab_grid_layout_->setColumnStretch(0,1);
-        pam_tab_grid_layout_->setColumnStretch(1,1);
-        pam_tab_grid_layout_->setColumnStretch(2,1);
+        pam_tab_grid_layout_->setColumnStretch(0, 1);
+        pam_tab_grid_layout_->setColumnStretch(1, 1);
+        pam_tab_grid_layout_->setColumnStretch(2, 1);
 
-        //Create and position the header display
-        
+        // Create and position the header display
+
         pam_header_bar_ = new QHBoxLayout();
-        pam_header_bar_->setStretch(0,50);
-        pam_header_bar_->setStretch(1,50);
-        pam_tab_grid_layout_->addLayout(pam_header_bar_,0,0);
+        pam_header_bar_->setStretch(0, 50);
+        pam_header_bar_->setStretch(1, 50);
+        pam_tab_grid_layout_->addLayout(pam_header_bar_, 0, 0);
 
         current_temp_ = new QLabel();
         current_temp_->setText("Current Temperature: LOADING");
@@ -55,22 +55,21 @@ namespace coral_cam
         // Create and position the Realsense Feed
         camera_feed_ = new QLabel();
         camera_feed_->setSizePolicy(expandingSizePolicy);
-        pam_tab_grid_layout_->addWidget(camera_feed_,1,0);
+        pam_tab_grid_layout_->addWidget(camera_feed_, 1, 0);
 
-        //Create and position the footer display
+        // Create and position the footer display
         pam_footer_bar_ = new QHBoxLayout();
-        pam_tab_grid_layout_->addLayout(pam_footer_bar_,2,0);
+        pam_tab_grid_layout_->addLayout(pam_footer_bar_, 2, 0);
 
         depth_to_center_ = new QLabel();
         depth_to_center_->setText("Depth To Center: ");
         depth_to_center_->setAlignment(Qt::AlignLeft);
         pam_footer_bar_->addWidget(depth_to_center_);
 
-        // Create a tab for our settings to go 
+        // Create a tab for our settings to go
         settings_tab_ = new QWidget();
         this->addTab(settings_tab_, QString("Settings"));
         settings_tab_grid_layout_ = new QGridLayout(settings_tab_);
-
 
         this->show();
     }
@@ -86,12 +85,14 @@ namespace coral_cam
         camera_feed_->setPixmap(current_real_sense_camera_pix_map);
     }
 
-    void Gui::setTemperature(std_msgs::msg::String::SharedPtr msg){
+    void Gui::setTemperature(std_msgs::msg::String::SharedPtr msg)
+    {
         std::string text = "Current Temperature: " + msg->data;
         current_temp_->setText(text.c_str());
     }
 
-    void Gui::setBattery(std_msgs::msg::String::SharedPtr msg){
+    void Gui::setBattery(std_msgs::msg::String::SharedPtr msg)
+    {
         std::string text = "Current Battery: " + msg->data;
         current_battery_->setText(text.c_str());
     }

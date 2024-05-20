@@ -29,15 +29,14 @@ namespace coral_cam
     {
         previous_industrial_camera_capture_in_progress_ = industrial_camera_capture_in_progress_;
         industrial_camera_capture_in_progress_ = msg->data;
-        
-        if(previous_industrial_camera_capture_in_progress_ == true && industrial_camera_capture_in_progress_ == false){
+
+        if (previous_industrial_camera_capture_in_progress_ == true && industrial_camera_capture_in_progress_ == false)
+        {
             std_msgs::msg::Bool inProgress;
             inProgress.data = true;
             real_sense_capture_in_progress_publisher_->publish(inProgress);
             RCLCPP_INFO(this->get_logger(), "STARTING REAL SENSE CAPTURE");
             number_of_captures_to_save_ = this->get_parameter("number_of_captures").as_int();
-
-
         }
     }
 
@@ -52,14 +51,15 @@ namespace coral_cam
             previous_number_of_captures_to_save_ = number_of_captures_to_save_;
             number_of_captures_to_save_--;
         }
-        else if(previous_number_of_captures_to_save_ == 1){
+        else if (previous_number_of_captures_to_save_ == 1)
+        {
             previous_number_of_captures_to_save_ = 0;
             std_msgs::msg::Bool inProgress;
             inProgress.data = false;
             RCLCPP_INFO(this->get_logger(), "REAL SENSE CAMERA CAPTURE COMPLETE");
             real_sense_capture_in_progress_publisher_->publish(inProgress);
             RCLCPP_INFO(this->get_logger(), "FULL CAPTURE COMPLETED SUCCESSFULLY");
-            capture_in_progress_publisher_ ->publish(inProgress);
+            capture_in_progress_publisher_->publish(inProgress);
         }
     }
 

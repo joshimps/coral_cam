@@ -18,19 +18,18 @@ namespace coral_cam
         {
             RCLCPP_ERROR(this->get_logger(), "INVALID GPIO HANDLE CREATED: %d", gpio_handle_);
         }
-        else{
+        else
+        {
             RCLCPP_ERROR(this->get_logger(), "SUCESSFULLY CREATED GPIO HANDLE: %d", gpio_handle_);
         }
 
         gpio_handle_publisher_ = this->create_publisher<std_msgs::msg::Int64>("gpio_handle_topic", 1);
 
-
-        if(gpio_handle_publisher_->get_intra_process_subscription_count() == 0)
+        if (gpio_handle_publisher_->get_intra_process_subscription_count() == 0)
         {
             RCLCPP_ERROR(this->get_logger(), "GPIO HANDLE SUB COUNT IS 0, GPIO CONNECTIONS WILL NOT WORK: %ld", gpio_handle_publisher_->get_intra_process_subscription_count());
-
         }
-        
+
         std_msgs::msg::Int64 gpio_handle_message;
         gpio_handle_message.data = gpio_handle_;
         gpio_handle_publisher_->publish(gpio_handle_message);

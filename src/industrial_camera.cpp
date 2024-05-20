@@ -30,7 +30,6 @@ namespace coral_cam
             inProgress.data = true;
             industrial_camera_capture_in_progress_publisher_->publish(inProgress);
             number_of_captures_to_save_ = this->get_parameter("number_of_captures").as_int();
-
         }
     }
 

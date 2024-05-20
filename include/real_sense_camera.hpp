@@ -13,7 +13,6 @@
 #include <pcl/common/centroid.h>
 #include <pcl_conversions/pcl_conversions.h>
 
-
 namespace coral_cam
 {
     class RealSenseCamera : public rclcpp::Node
@@ -34,41 +33,29 @@ namespace coral_cam
         */
         void WritePointCloudtoFile(pcl::PCLPointCloud2 pointcloud);
 
-
     private:
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Callbacks                                                                                             //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        
         void StartWritingPointCloud(std_msgs::msg::Bool::SharedPtr msg);
 
-        
         void GetCurrentPointCloud(sensor_msgs::msg::PointCloud2::SharedPtr msg);
-
-
-        //void CalculateCurrentCentreDepth(sensor_msgs::msg::Image::SharedPtr msg);
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Private Methods                                                                                       //
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Node, Publishers and Subscribers                                                                      //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr real_sense_subscriber_;
-        rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr depth_image_subscriber_;
         rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr industrial_camera_capture_in_progress_subscriber_;
+
         rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr real_sense_capture_in_progress_publisher_;
         rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr capture_in_progress_publisher_;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Constants                                                                                             //
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Variables                                                                                             //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         std::string path_;
         int number_of_files_;
 
@@ -77,9 +64,6 @@ namespace coral_cam
 
         sensor_msgs::msg::PointCloud2 current_point_cloud_;
         pcl::PCLPointCloud2 saved_point_cloud_as_pcl_;
-
-        int pixels_[2];
-
 
         bool previous_industrial_camera_capture_in_progress_;
         bool industrial_camera_capture_in_progress_;

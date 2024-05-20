@@ -56,8 +56,6 @@ namespace coral_cam
         rclcpp::Subscription<std_msgs::msg::String>::SharedPtr temperature_subscriber_;
         rclcpp::Subscription<std_msgs::msg::String>::SharedPtr baattery_subscriber_;
 
-
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Constants                                                                                             //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,20 +69,16 @@ namespace coral_cam
         QWidget *pam_tab_;
         QGridLayout *pam_tab_grid_layout_;
 
-        QHBoxLayout * pam_header_bar_;
+        QHBoxLayout *pam_header_bar_;
         QLabel *current_temp_;
         QLabel *current_battery_;
 
         QLabel *camera_feed_;
 
-        QHBoxLayout * pam_footer_bar_;
+        QHBoxLayout *pam_footer_bar_;
         QLabel *depth_to_center_;
-
 
         QWidget *settings_tab_;
         QGridLayout *settings_tab_grid_layout_;
-
-
-        
     };
 }
