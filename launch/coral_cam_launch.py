@@ -29,7 +29,7 @@ blue_flash_length_ms = 1000
 #Temperature Settings
 cuttoff_temperature = 100;
 
-#Image Processing Settings
+#Image Processing Settings (Best If Left Alone)
 desired_width = 800
 desired_height = 360
 input_image = '/real_sense/color/image_rect_raw'
