@@ -3,6 +3,8 @@
 
 #include <string>
 #include <chrono>
+#include <stdexcept>
+#include <bits/stdc++.h> 
 
 using namespace std::chrono_literals;
 
@@ -43,6 +45,9 @@ namespace coral_cam
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Variables                                                                                             //
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        std::string current_temperature_;
+        std::string current_temperature_string_;
+        int current_temperature_;
+        int cutoff_temperature_;
+
     };
 }

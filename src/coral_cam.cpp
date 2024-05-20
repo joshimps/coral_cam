@@ -17,6 +17,8 @@ int main(int argc, char *argv[])
     rclcpp::NodeOptions battery_options;
     rclcpp::NodeOptions capture_button_options;
     rclcpp::NodeOptions real_sense_camera_options;
+    rclcpp::NodeOptions industrial_camera_options;
+    rclcpp::NodeOptions lights_options;
     rclcpp::NodeOptions gpio_options;
     rclcpp::NodeOptions gui_options;
     rclcpp::NodeOptions temperature_sensor_options;
@@ -37,9 +39,23 @@ int main(int argc, char *argv[])
     auto gpio = std::make_shared<coral_cam::Gpio>(gpio_options);
     executor.add_node(gpio);
 
+    auto industrial_camera = std::make_shared<coral_cam::IndustrialCamera>(industrial_camera_options);
+    executor.add_node(industrial_camera);
+
+    auto lights = std::make_shared<coral_cam::Lights>(lights_options);
+    executor.add_node(lights);
+
     while (rclcpp::ok())
     {
-        executor.spin_some();
+        try
+        {
+            executor.spin_some();
+        }
+        catch(const std::exception& e)
+        {
+            rclcpp::shutdown();
+        }
+        
     }
 
     rclcpp::shutdown();

@@ -26,6 +26,9 @@ number_of_industrial_captures = 10
 #Light Settings
 blue_flash_length_ms = 1000
 
+#Temperature Settings
+cuttoff_temperature = 100;
+
 #Image Processing Settings
 desired_width = 800
 desired_height = 360
@@ -143,6 +146,7 @@ def generate_launch_description():
                         name='temperature_sensor_node',
                         namespace='coral_cam',
                         extra_arguments=[{'use_intra_process_comms': True}],
+                        parameters = [{"cutoff_temperature":cuttoff_temperature}]
                     ),
                     ComposableNode(
                         package='coral_cam',
